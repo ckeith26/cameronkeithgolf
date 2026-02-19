@@ -1,0 +1,54 @@
+---
+title: "Hello World: Building This Site"
+date: "2026-02-18"
+excerpt: "A look at how I built my personal site with Next.js 16, MDX, and a data-driven architecture."
+tags: ["next.js", "mdx", "web-dev", "typescript"]
+---
+
+# Why Build a Personal Site From Scratch?
+
+There are plenty of portfolio templates out there. Drag-and-drop builders, Notion pages exported as websites, single-page resumes hosted on GitHub Pages. They work fine — but they all feel the same.
+
+I wanted something that reflected how I actually think about building software: typed data layers, component-driven architecture, and content I can version-control alongside code. So I built this site with **Next.js 16**, **TypeScript**, and **MDX**.
+
+## The Stack
+
+Here is a quick look at what powers this site:
+
+- **Next.js 16 App Router** for file-based routing and React Server Components
+- **MDX** via `next-mdx-remote` for blog posts that mix Markdown with React
+- **Tailwind CSS v4** for styling without leaving the markup
+- **Framer Motion** for scroll-triggered animations
+- **Shiki** via `rehype-pretty-code` for syntax highlighting
+
+## A Sample: Data-Driven Projects
+
+Every project on this site is defined in a single TypeScript file. Here is what one entry looks like:
+
+```python
+# Not the actual site code — but here's a quick Python example
+# to show off syntax highlighting in this blog.
+
+def fibonacci(n: int) -> list[int]:
+    """Generate the first n Fibonacci numbers."""
+    sequence = []
+    a, b = 0, 1
+    for _ in range(n):
+        sequence.append(a)
+        a, b = b, a + b
+    return sequence
+
+print(fibonacci(10))
+# [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+```
+
+## What Is Next
+
+This blog will be a place for me to write about:
+
+- AI/ML research and side projects
+- Lessons from competing in D1 golf and building startups simultaneously
+- Technical deep-dives into tools and frameworks I use
+- Reflections on the intersection of finance, technology, and competition
+
+If you have made it this far, thanks for reading. More posts coming soon.
