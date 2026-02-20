@@ -65,13 +65,13 @@ async function fetchContributionSvg(): Promise<{
       );
       if (contribRes.ok) {
         const contribHtml = await contribRes.text();
-        const countMatches = [
-          ...contribHtml.matchAll(/data-count="(\d+)"/g),
-        ];
-        total = countMatches.reduce(
-          (sum, m) => sum + parseInt(m[1], 10),
-          0
+        // Parse "X contributions in the last year" text
+        const totalMatch = contribHtml.match(
+          /([\d,]+)\s+contributions?\s+in\s+the\s+last\s+year/
         );
+        if (totalMatch) {
+          total = parseInt(totalMatch[1].replace(/,/g, ""), 10);
+        }
       }
     } catch {
       // Fall back to 0 if fetch fails
