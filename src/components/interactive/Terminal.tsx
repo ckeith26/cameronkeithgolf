@@ -20,19 +20,19 @@ type TerminalLine =
   | { type: "text"; content: string; style?: "command" | "muted" | "success" | "greeting" }
   | { type: "ai"; content: string }
   | { type: "nav"; status: "pending" | "done"; route: string }
-  | { type: "loading" };
+  | { type: "loading" }
+  | { type: "welcome" };
 
 // ── Constants ────────────────────────────────────────────────────────
 
 const STORAGE_KEY = "ck-terminal-messages";
 
 const BOOT_LINES: { content: string; style?: "command" | "muted" | "success" | "greeting"; delay: number }[] = [
-  { content: "$ cam-code init", style: "command", delay: 600 },
   { content: "⠋ Loading context...", style: "muted", delay: 800 },
-  { content: "✓ Cameron Keith — D1 Golfer / AI Engineer / Dartmouth '26", style: "success", delay: 500 },
+  { content: "✓ Cameron Keith | D1 Golfer / AI Engineer / Dartmouth '26", style: "success", delay: 500 },
   { content: "✓ Ready", style: "success", delay: 600 },
   { content: "", style: undefined, delay: 300 },
-  { content: "Hey! I'm Cam Code — Cameron's AI assistant.", style: "greeting", delay: 400 },
+  { content: "Hey! I'm Cam Code, Cameron's AI assistant.", style: "greeting", delay: 400 },
   { content: "Ask me anything or type /help for commands.", style: "greeting", delay: 300 },
 ];
 
@@ -80,7 +80,7 @@ function loadMessages(): Message[] | null {
       if (parsed.length > 0) return parsed;
     }
   } catch {
-    // Corrupted storage — reset
+    // Corrupted storage - reset
   }
   return null;
 }
@@ -97,7 +97,7 @@ function messagesToLines(messages: Message[]): TerminalLine[] {
   const lines: TerminalLine[] = [];
   for (const msg of messages) {
     if (msg.role === "user") {
-      lines.push({ type: "text", content: `$ > ${msg.content}`, style: "command" });
+      lines.push({ type: "text", content: `❯ ${msg.content}`, style: "command" });
     } else {
       lines.push({ type: "ai", content: msg.content });
     }
@@ -150,11 +150,13 @@ function renderTextLine(line: Extract<TerminalLine, { type: "text" }>) {
 
   switch (style) {
     case "command":
-      if (content.startsWith("$ >")) {
+      if (content.startsWith("❯ ")) {
+        const cmd = content.slice(2);
+        const isSlashCommand = cmd.startsWith("/") && cmd.toLowerCase().trim() in SLASH_COMMANDS;
         return (
           <span className="leading-relaxed">
-            <span className="text-[#10b981]">$ &gt;</span>
-            <span className="text-[#fafafa]">{content.slice(3)}</span>
+            <span className="text-[#10b981]">❯ </span>
+            <span className={isSlashCommand ? "text-[#10b981]" : "text-[#fafafa]"}>{cmd}</span>
           </span>
         );
       }
@@ -238,6 +240,33 @@ function renderLoadingLine() {
   );
 }
 
+function renderWelcomeLine() {
+  return (
+    <div className="my-3 relative border border-[#3f3f46] rounded">
+      {/* Title embedded in top border */}
+      <div className="absolute -top-2.5 left-3 px-1.5 bg-[#111111] text-xs">
+        <span className="text-[#10b981]">Cam Code</span>
+        <span className="text-[#3f3f46] ml-1">v1.0</span>
+      </div>
+      {/* Content */}
+      <div className="px-4 pt-4 pb-3 flex items-center gap-5">
+        <pre className="text-[#10b981] text-[10px] leading-none m-0" aria-hidden="true">
+{` ██████╗██╗  ██╗
+██╔════╝██║ ██╔╝
+██║     █████╔╝
+██║     ██╔═██╗
+╚██████╗██║  ██╗
+ ╚═════╝╚═╝  ╚═╝`}
+        </pre>
+        <div className="flex flex-col justify-center gap-0.5">
+          <span className="text-[#fafafa] font-semibold text-sm">Cam Code</span>
+          <span className="text-[#71717a] text-xs">camkeith.me</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const blinkingCursor = (
   <span
     className="inline-block w-2 h-4 bg-[#10b981] align-middle ml-px"
@@ -260,6 +289,8 @@ function renderLine(line: TerminalLine, index: number, showCursor?: boolean) {
       return <div key={index}>{renderNavLine(line)}</div>;
     case "loading":
       return <div key={index}>{renderLoadingLine()}</div>;
+    case "welcome":
+      return <div key={index}>{renderWelcomeLine()}</div>;
   }
 }
 
@@ -275,9 +306,9 @@ export function Terminal({ className }: TerminalProps) {
   const [isTyping, setIsTyping] = useState(false);
   const [bootComplete, setBootComplete] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [hasStarted, setHasStarted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [hasRestoredSession, setHasRestoredSession] = useState(false);
+
+  const hasBootedRef = useRef(false);
 
   const mountedRef = useRef(true);
 
@@ -295,6 +326,12 @@ export function Terminal({ className }: TerminalProps) {
       outputRef.current.scrollTop = outputRef.current.scrollHeight;
     }
   }, []);
+
+  // ── Auto-scroll whenever lines change ──────────────────────────────
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [lines, scrollToBottom]);
 
   // ── Typewriter utility ─────────────────────────────────────────────
 
@@ -341,14 +378,31 @@ export function Terminal({ className }: TerminalProps) {
 
   const playBoot = useCallback(async () => {
     if (prefersReducedMotion) {
-      // Skip animation — show all boot lines instantly
-      setLines(BOOT_LINES.map((b) => ({ type: "text" as const, content: b.content, style: b.style })));
+      setLines([
+        { type: "text", content: "$ cam", style: "command" },
+        { type: "welcome" },
+        ...BOOT_LINES.map((b) => ({ type: "text" as const, content: b.content, style: b.style })),
+      ]);
       setBootComplete(true);
       return;
     }
 
     setIsTyping(true);
 
+    // Type "cam" at the shell prompt character by character
+    const command = "cam";
+    setLines([{ type: "text", content: "$ ", style: "command" }]);
+    for (let i = 0; i < command.length; i++) {
+      await new Promise((r) => setTimeout(r, 100 + Math.random() * 80));
+      setLines([{ type: "text", content: `$ ${command.slice(0, i + 1)}`, style: "command" }]);
+    }
+    await new Promise((r) => setTimeout(r, 600));
+
+    // Show welcome box
+    setLines((prev) => [...prev, { type: "welcome" }]);
+    await new Promise((r) => setTimeout(r, 800));
+
+    // Boot sequence
     for (const bootLine of BOOT_LINES) {
       await typeText(bootLine.content, bootLine.style);
       await new Promise((r) => setTimeout(r, bootLine.delay));
@@ -358,16 +412,6 @@ export function Terminal({ className }: TerminalProps) {
     setBootComplete(true);
   }, [prefersReducedMotion, typeText]);
 
-  // ── Check for existing session on mount ────────────────────────────
-
-  useEffect(() => {
-    const stored = loadMessages();
-    if (stored && stored.length > 0) {
-      setMessages(stored);
-      setHasRestoredSession(true);
-    }
-  }, []);
-
   // ── Persist messages on every change ───────────────────────────────
 
   useEffect(() => {
@@ -376,44 +420,38 @@ export function Terminal({ className }: TerminalProps) {
     }
   }, [messages]);
 
-  // ── IntersectionObserver to trigger boot on scroll ─────────────────
+  // ── IntersectionObserver: auto-boot when scrolled into view ────────
 
   useEffect(() => {
-    if (hasStarted) return;
-
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || hasBootedRef.current) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
-          setHasStarted(true);
+        if (entries[0].isIntersecting && !hasBootedRef.current) {
+          hasBootedRef.current = true;
           observer.disconnect();
+
+          const stored = loadMessages();
+          if (stored && stored.length > 0) {
+            setMessages(stored);
+            setLines([
+              { type: "text", content: "$ cam", style: "command" },
+              { type: "welcome" },
+              ...messagesToLines(stored),
+            ]);
+            setBootComplete(true);
+          } else {
+            playBoot();
+          }
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.5 }
     );
 
     observer.observe(container);
     return () => observer.disconnect();
-  }, [hasStarted]);
-
-  // ── Start boot or restore session when visible ─────────────────────
-
-  useEffect(() => {
-    if (!hasStarted) return;
-
-    if (hasRestoredSession) {
-      // Skip boot — show restored conversation with a fresh prompt
-      const restoredLines = messagesToLines(messages);
-      setLines(restoredLines);
-      setBootComplete(true);
-    } else {
-      playBoot();
-    }
-    // Intentionally omits hasRestoredSession, messages, playBoot — only fires once when hasStarted becomes true
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasStarted]);
+  }, [playBoot]);
 
   // ── Focus input when boot completes ────────────────────────────────
 
@@ -433,7 +471,7 @@ export function Terminal({ className }: TerminalProps) {
       if (!command) return false;
 
       // Show the command as a terminal line
-      setLines((prev) => [...prev, { type: "text", content: `$ > ${normalized}`, style: "command" }]);
+      setLines((prev) => [...prev, { type: "text", content: `❯ ${normalized}`, style: "command" }]);
 
       // Also track in messages for AI context
       const userMsg: Message = { role: "user", content: normalized };
@@ -443,7 +481,7 @@ export function Terminal({ className }: TerminalProps) {
           const helpLines = buildHelpLines();
           setLines((prev) => [...prev, ...helpLines]);
           const helpContent = Object.entries(SLASH_COMMANDS)
-            .map(([c, { description }]) => `${c} — ${description}`)
+            .map(([c, { description }]) => `${c} - ${description}`)
             .join("\n");
           setMessages((prev) => [...prev, userMsg, { role: "assistant", content: helpContent }]);
           break;
@@ -510,16 +548,16 @@ export function Terminal({ className }: TerminalProps) {
         // Unknown slash command
         setLines((prev) => [
           ...prev,
-          { type: "text", content: `$ > ${trimmed}`, style: "command" },
+          { type: "text", content: `❯ ${trimmed}`, style: "command" },
           { type: "text", content: `Unknown command "${trimmed}". Type /help to see available commands.`, style: "muted" },
         ]);
         return;
       }
 
       // Show user input as command line
-      setLines((prev) => [...prev, { type: "text", content: `$ > ${trimmed}`, style: "command" }]);
+      setLines((prev) => [...prev, { type: "text", content: `❯ ${trimmed}`, style: "command" }]);
 
-      // Build messages for API — use functional updater to avoid stale closure
+      // Build messages for API - use functional updater to avoid stale closure
       const userMsg: Message = { role: "user", content: trimmed };
       let updatedMessages: Message[] = [];
       setMessages((prev) => {
@@ -662,51 +700,84 @@ export function Terminal({ className }: TerminalProps) {
 
   // ── Render ─────────────────────────────────────────────────────────
 
+  const boxLine = "─".repeat(120);
+
   return (
     <div
       ref={containerRef}
-      className={`bg-[#111111] rounded-lg border border-[#27272a] overflow-hidden ${className ?? ""}`}
+      className={`bg-[#111111] font-mono rounded-lg border border-[#27272a] flex flex-col ${className ?? ""}`}
     >
-      {/* Title bar */}
+      {/* macOS title bar */}
       <div className="flex items-center gap-2 px-4 py-3 border-b border-[#27272a]">
-        <div className="w-3 h-3 rounded-full bg-[#ef4444]" />
-        <div className="w-3 h-3 rounded-full bg-[#eab308]" />
-        <div className="w-3 h-3 rounded-full bg-[#22c55e]" />
-        <span className="ml-2 text-xs text-[#a1a1aa] font-mono">cam-code</span>
+        <span className="w-3 h-3 rounded-full bg-[#ef4444]" />
+        <span className="w-3 h-3 rounded-full bg-[#eab308]" />
+        <span className="w-3 h-3 rounded-full bg-[#22c55e]" />
+        <span className="text-[#71717a] text-xs ml-3">✻ Cam Code - v1.0 ‹ terminal</span>
       </div>
 
-      {/* Output */}
+      {/* Output area */}
       <div
         ref={outputRef}
-        className="p-4 font-mono text-sm min-h-[200px] max-h-[400px] overflow-y-auto"
+        className="flex-1 p-4 text-sm min-h-[200px] max-h-[400px] overflow-y-auto"
       >
         {lines.map((line, i) =>
           renderLine(line, i, isTyping && i === lines.length - 1)
         )}
 
-        {/* Input line */}
+        {/* Input prompt */}
         {bootComplete && !isTyping && (
-          <div className="flex items-center mt-1">
-            <span className="text-[#10b981] font-mono text-sm">$ &gt;&nbsp;</span>
-            <input
-              ref={inputRef}
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleSubmit();
-                }
-              }}
-              disabled={isLoading}
-              className="flex-1 bg-transparent text-[#fafafa] font-mono text-sm outline-none caret-[#10b981] disabled:opacity-50"
-              spellCheck={false}
-              autoComplete="off"
-              placeholder="Ask anything or /help..."
-              aria-label="Terminal input"
-            />
+          <div className="mt-3">
+            <div className="text-[#3f3f46] text-sm select-none overflow-hidden whitespace-nowrap">
+              {boxLine}
+            </div>
+            <div className="flex items-center py-1.5">
+              <span className="text-[#10b981] text-sm">❯&nbsp;</span>
+              <div className="flex-1 relative">
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSubmit();
+                    }
+                  }}
+                  disabled={isLoading}
+                  className={`w-full bg-transparent font-mono text-sm outline-none caret-transparent disabled:opacity-50 ${
+                    inputValue.startsWith("/") && inputValue.toLowerCase().trim() in SLASH_COMMANDS
+                      ? "text-[#10b981]"
+                      : "text-[#fafafa]"
+                  }`}
+                  spellCheck={false}
+                  autoComplete="off"
+                  placeholder="Ask anything or /help..."
+                  aria-label="Terminal input"
+                />
+                {/* Block cursor */}
+                <span
+                  className="absolute top-1/2 -translate-y-1/2 w-[9px] h-[18px] bg-[#10b981] pointer-events-none"
+                  style={{
+                    left: `${inputValue.length}ch`,
+                    animation: "terminal-blink 1s step-end infinite",
+                  }}
+                />
+              </div>
+            </div>
+            <div className="text-[#3f3f46] text-sm select-none overflow-hidden whitespace-nowrap">
+              {boxLine}
+            </div>
           </div>
         )}
+      </div>
+
+      {/* Status bar */}
+      <div className="flex items-center justify-between px-4 py-1.5 border-t border-[#27272a] text-[10px] select-none">
+        <span>
+          <span className="text-[#10b981]">cameronkeith</span>
+          <span className="text-[#71717a] ml-2">Cam Code</span>
+        </span>
+        <span className="text-[#3f3f46]">camkeith.me</span>
       </div>
     </div>
   );
