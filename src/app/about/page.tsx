@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { SectionContainer } from "@/components/ui/SectionContainer";
 import { Badge } from "@/components/ui/Badge";
@@ -12,7 +13,7 @@ import { coursework } from "@/data/coursework";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "The story behind Cameron Keith — from Bay Area junior golf to Dartmouth D1 athlete and AI engineer.",
+    "The story behind Cameron Keith, from Bay Area junior golf to Dartmouth D1 athlete and AI engineer.",
 };
 
 export default function AboutPage() {
@@ -103,7 +104,7 @@ export default function AboutPage() {
                   &ldquo;{citation.description}&rdquo;
                 </p>
                 <p className="mt-2 text-xs text-foreground-subtle">
-                  &mdash; {citation.professor}
+                  - {citation.professor}
                 </p>
               </div>
             ))}
@@ -126,9 +127,10 @@ export default function AboutPage() {
                   style={{ gridAutoFlow: "column", gridTemplateRows: `repeat(${Math.ceil(category.courses.length / 3)}, minmax(0, 1fr))` }}
                 >
                   {category.courses.map((course) => (
-                    <div
+                    <Link
                       key={course.code}
-                      className="rounded-md border border-border bg-background-elevated px-4 py-3"
+                      href={`/courses/${course.slug}`}
+                      className="rounded-md border border-border bg-background-elevated px-4 py-3 transition-all duration-200 hover:scale-[1.02] hover:border-accent/40"
                     >
                       <div className="flex items-center justify-between">
                         <p className="font-mono text-xs text-accent">
@@ -141,7 +143,7 @@ export default function AboutPage() {
                       <p className="mt-0.5 text-sm text-foreground-muted">
                         {course.title}
                       </p>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>
