@@ -3,7 +3,7 @@
   "checkpoint_id": "2df97824d643",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 3,
+  "checkpoints_count": 4,
   "files_touched": [
     "src/app/golf/page.tsx",
     "src/app/page.tsx",
@@ -11,6 +11,7 @@
     "src/components/interactive/PhotoCarousel.tsx",
     "src/components/interactive/ScrollProgressBar.tsx",
     "src/components/interactive/ScrollSection.tsx",
+    "src/components/sections/GitHubContributions.tsx",
     "src/components/sections/ProjectCardCompact.tsx",
     "src/components/sections/ProjectCardFeatured.tsx",
     "src/components/sections/ProjectList.tsx",
@@ -38,13 +39,20 @@
       "context": "/2d/f97824d643/2/context.md",
       "content_hash": "/2d/f97824d643/2/content_hash.txt",
       "prompt": "/2d/f97824d643/2/prompt.txt"
+    },
+    {
+      "metadata": "/2d/f97824d643/3/metadata.json",
+      "transcript": "/2d/f97824d643/3/full.jsonl",
+      "context": "/2d/f97824d643/3/context.md",
+      "content_hash": "/2d/f97824d643/3/content_hash.txt",
+      "prompt": "/2d/f97824d643/3/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 2094,
-    "cache_creation_tokens": 162171,
-    "cache_read_tokens": 4280120,
-    "output_tokens": 12042,
-    "api_call_count": 68
+    "input_tokens": 2136,
+    "cache_creation_tokens": 287483,
+    "cache_read_tokens": 5636945,
+    "output_tokens": 15614,
+    "api_call_count": 96
   }
 }
