@@ -1,0 +1,198 @@
+Implement the following plan:
+
+# Homepage Redesign: Flowing Section Experience
+
+## Context
+
+The current homepage has 4 disconnected sections (Hero, Terminal, Quick-links, Featured projects) that feel like stacked blocks with padding between them. Sub-pages (About, Work, Golf, Contact) hold great content that visitors never discover. The goal is to create a single flowing scroll experience where 7 sections blend into each other with subtle gradients and parallax — similar to top YC company landing pages — while keeping sub-pages as full detail pages.
+
+## Sections (in order)
+
+1. **Hero** — Full viewport height, name + tagline + scroll indicator
+2. **Terminal** — AI chat (existing component, unchanged)
+3. **Story Teaser** — 1-2 paragraphs from `aboutContent` + "Read full story" link
+4. **Experience Highlights** — Top 3 current roles from `experiences` + "View full timeline" link
+5. **Featured Projects** — 2 featured projects (existing) + "See all projects" link
+6. **Golf Achievements** — Top 4-6 achievement stat cards + "Full golf career" link
+7. **Contact CTA** — Email + social links + resume
+
+## Architecture
+
+### New Files to Create
+
+**1. `src/components/interactive/ScrollSection.tsx`** (client component)
+- Scroll-progress-aware section wrapper using Framer Motion `useScroll` + `useTransform`
+- Props: `id`, `children`, `className`, `fullHeight?`, `parallax?`, `parallaxOffset?` (default 20px), `gradientTop?`, `gradientBottom?` (CSS gradient strings)
+- Renders gradient overlay divs (h-32, absolute positioned, pointer-events-none) at top/bottom edges for color blending between sections
+- Wraps children in `motion.div` with subtle vertical parallax when `parallax` is enabled
+- Respects `useReducedMotion()` — falls back to plain `<section>` with no transforms
+- Content area uses `max-w-[1200px] mx-auto px-6 md:px-8` (same as `SectionContainer`)
+
+**2. `src/components/interactive/ScrollProgressBar.tsx`** (client component)
+- 2px horizontal bar fixed at top of viewport, fills with emerald as page scrolls
+- Uses `useScroll()` + `motion.div` with `scaleX: scrollYProgress`
+- ~15 lines total
+
+**3. `src/components/interactive/HomePageClient.tsx`** (client component)
+- The main client-side homepage orchestrator with `"use client"`
+- Composes all 7 `ScrollSection` sections with content
+- Imports data from: `aboutContent`, `experiences`, `featuredProjects`, `golfData`, `socialLinks`
+- Reuses existing components: `Terminal`, `TimelineEntry`, `ProjectCardFeatured`, `GolfStatCard`, `ScrollReveal`
+
+### Files to Modify
+
+**4. `src/app/page.tsx`**
+- Stays as server component
+- Replaces current content with `<PageLayout><HomePageClient /></PageLayout>`
+- Clean and minimal — all logic lives in `HomePageClient`
+
+**5. `src/styles/globals.css`**
+- Add `html { scroll-behavior: smooth; }` for hash-link navigation
+- Add `.gradient-text-emerald` utility for accent-colored headings
+- Add `@keyframes float-up` for scroll indicator animation
+
+### Files Unchanged (reused as-is)
+- `Terminal.tsx` — complex stateful component, no changes
+- `BackgroundGrid.tsx` — fixed background layer, no changes
+- `ProjectCardFeatured.tsx`, `GolfStatCard.tsx`, `TimelineEntry.tsx` — section components reused directly
+- `ScrollReveal.tsx` — used for per-element entrance animations within sections
+- `AsciiDivider.tsx` — not used on homepage (subtle gradients approach, not ASCII connectors)
+- `Header.tsx`, `Footer.tsx`, `PageLayout.tsx` — layout unchanged
+- All sub-pages (`/about`, `/work`, `/golf`, `/contact`, `/projects`, `/blog`) — unchanged
+
+## Section Details
+
+### 1. Hero Section
+- `min-h-screen flex items-center` — fills first viewport
+- Name with staggered letter animation (Framer Motion `variants` + `staggerChildren: 0.03`)
+- Tagline and bio paragraph fade in after
+- Scroll-down indicator at bottom: "scroll" in mono font with gentle bounce animation (`animate={{ y: [0, 8, 0] }}`)
+- Hero text gets parallax (drifts up slightly as you scroll past)
+- **Gradient bottom**: `transparent → rgba(16, 185, 129, 0.02)` — faintest emerald warmth leading into terminal
+
+### 2. Terminal Section
+- Existing `<Terminal />` component, no wrapper `ScrollReveal` needed (terminal has its own boot sequence)
+- Add subtle `box-shadow: 0 0 60px rgba(16, 185, 129, 0.04)` to terminal container
+- **Gradient bottom**: `rgba(16, 185, 129, 0.02) → transparent` — emerald fades out
+
+### 3. Story Teaser Section
+- h2: `aboutContent.headline` ("Builder. Competitor. Researcher.")
+- Paragraph: `aboutContent.intro`
+- Second paragraph: first 2 sentences of `aboutContent.sections[0].body`
+- Link: "Read the full story →" to `/about`
+- Parallax enabled (subtle float)
+- **Gradient bottom**: `transparent → rgba(16, 185, 129, 0.015)`
+
+### 4. Experience Highlights Section
+- h2: "Experience"
+- Filter `experiences` for `current: true`, take first 3
+- Render with `TimelineEntry` in a `relative` container with the vertical timeline line (`absolute left-[7px] w-px bg-border`)
+- Show role, org, dateRange, description, first bullet only
+- Link: "View full timeline →" to `/work`
+- `ScrollReveal` with staggered delays on each entry
+- **Gradient bottom**: `rgba(16, 185, 129, 0.015) → transparent`
+
+### 5. Featured Projects Section
+- h2: "Featured Work"
+- `featuredProjects.slice(0, 2)` rendered with `ProjectCardFeatured` in 2-column grid (same as current)
+- Link: "See all projects →" to `/projects`
+- `ScrollReveal` with staggered delays
+- **Gradient bottom**: `transparent → rgba(16, 185, 129, 0.025)` — building toward golf
+
+### 6. Golf Achievements Section
+- h2: "Golf"
+- Brief tagline: first sentence of `golfData.athleticBio`
+- `golfData.achievements.slice(0, 4)` rendered with `GolfStatCard` in responsive grid (2-col mobile, 4-col desktop)
+- Include Dartmouth logo on NCAA card (same logic as golf page)
+- Link: "Full golf career →" to `/golf`
+- `ScrollReveal` with staggered delays
+- **Gradient bottom**: `rgba(16, 185, 129, 0.025) → rgba(16, 185, 129, 0.04)` — warm glow into CTA
+
+### 7. Contact CTA Section
+- h2: "Let's Connect"
+- Email in `font-mono text-lg text-accent`
+- Social links as icon row (reuse `socialLinks` data, render SVG icons inline with hover scale)
+- Resume PDF button
+- Centered layout, generous padding (`py-32`)
+- Subtle radial gradient background: `radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.05) 0%, transparent 60%)`
+
+## Visual Flow Techniques
+
+### Gradient Overlays
+- Each `ScrollSection` can render 32px-tall gradient `<div>` overlays at its top/bottom edges
+- These are `absolute`, `pointer-events-none`, `z-20`
+- Creates subtle "temperature shifts" — the page isn't one flat color but has barely perceptible warmth changes
+- All gradients use the emerald accent at very low opacity (0.015–0.04)
+
+### Parallax
+- Hero and Story sections get mild parallax (`useTransform(scrollYProgress, [0, 1], [offset, -offset])`)
+- Offset is 20px (barely noticeable but adds depth)
+- Disabled on mobile (`md:` breakpoint check) and when `prefers-reduced-motion` is set
+
+### Spacing Rhythm
+- No hard borders or dividers between sections
+- Consistent generous vertical padding: `py-24` for most sections, `py-32` for CTA
+- Spacing alone, combined with gradients, creates the flowing feel
+
+### Scroll Progress Bar
+- Thin 2px emerald bar at very top of page
+- Fills left-to-right as you scroll
+- Ties the entire page together as one continuous experience
+
+## Responsive Behavior
+- **Desktop (1024px+)**: Full parallax, 2-col project grid, 4-col golf grid
+- **Tablet (768-1023px)**: Parallax at half offset, 2-col grids
+- **Mobile (<768px)**: No parallax, single column where needed, scroll progress bar stays
+- Existing `clamp()` typography in `globals.css` handles font scaling
+
+## Performance
+- Single `useScroll()` at the `HomePageClient` level; derive per-section values with `useTransform`
+- All transforms use `translateY` only (GPU-accelerated)
+- Gradient overlays use `opacity` (cheap)
+- `ScrollReveal` uses `viewport: { once: true }` — animates once, then stops
+- `will-change: transform` only on elements that actually animate
+- `BackgroundGrid` is unaffected (already uses direct DOM mutation)
+
+## Implementation Order
+
+1. Create `ScrollProgressBar.tsx` (~15 lines, simple)
+2. Create `ScrollSection.tsx` (core new primitive)
+3. Create `HomePageClient.tsx` (composes all 7 sections with data imports)
+4. Update `page.tsx` (swap to render `HomePageClient`)
+5. Add CSS utilities to `globals.css`
+6. Test scroll performance and responsive behavior
+7. Verify `prefers-reduced-motion` fallbacks
+
+## Verification
+
+1. `npm run dev` — check homepage loads with all 7 sections
+2. Scroll through entire page — sections should blend smoothly, no jarring breaks
+3. Check each "View full..." link navigates to correct sub-page
+4. Resize to mobile — verify responsive layout, no parallax jank
+5. Enable `prefers-reduced-motion` in OS settings — verify clean fallback (no animations, all content visible)
+6. Verify sub-pages (`/about`, `/work`, `/golf`, `/contact`) are unchanged
+7. Test Terminal functionality — messages, commands, localStorage persistence still work
+8. Check BackgroundGrid still renders behind all sections
+
+
+If you need specific details from before exiting plan mode (like exact code snippets, error messages, or content you generated), read the full transcript at: /Users/cameronkeith/.REDACTED.jsonl
+
+If this plan can be broken down into multiple independent tasks, consider using the TeamCreate tool to create a team and parallelize the work.
+
+---
+
+these green accents are off. Let's also modify the terminal animation to start right away
+
+Show a type writer effect also keep the first terminal style. We should render the claude code animation within that containter just like claude code does on my terminal.
+
+---
+
+[Image: source: REDACTED 2026-02-19 at 6.49.52 PM.png]
+
+[Image: source: REDACTED 2026-02-19 at 6.51.15 PM.png]
+
+[Image: source: REDACTED 2026-02-19 at 6.52.22 PM.png]
+
+---
+
+[Request interrupted by user for tool use]
