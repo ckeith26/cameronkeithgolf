@@ -44,7 +44,7 @@ export default function GolfPage() {
         </ScrollReveal>
         <ScrollReveal delay={0.1}>
           <div className="mt-6">
-            <PhotoCarousel photos={golfPhotos} interval={4000} />
+            <PhotoCarousel photos={golfPhotos} />
           </div>
         </ScrollReveal>
 
