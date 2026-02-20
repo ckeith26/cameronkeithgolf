@@ -1,0 +1,216 @@
+Implement the following plan:
+
+# Plan: Course Detail Pages & Enhanced Coursework Cards
+
+## Context
+
+The about page currently displays courses as simple cards showing only code, title, and term. The user wants to:
+1. Add publicly available course descriptions from the Dartmouth ORC catalog to each course
+2. Add hover effects to course cards (matching the existing project card pattern)
+3. Create individual course detail pages that follow the same pattern as project detail pages (`/projects/[slug]`)
+
+## Files to Modify
+
+| File | Action |
+|------|--------|
+| `src/data/coursework.ts` | Add `slug`, `description`, `category`, and `distributive` fields to `Course` interface; populate all 32 courses with ORC descriptions |
+| `src/app/about/page.tsx` | Wrap course cards in `<Link>` tags with hover effects matching `ProjectCardCompact` |
+| `src/app/courses/[slug]/page.tsx` | **New** — Course detail page following `projects/[slug]/page.tsx` pattern |
+
+## Step 1: Expand the `Course` interface and data (`src/data/coursework.ts`)
+
+Update the `Course` interface:
+```ts
+export interface Course {
+  code: string;
+  title: string;
+  term: string;
+  slug: string;           // URL-safe identifier (e.g., "cosc-74")
+  description: string;    // ORC catalog description
+  category: string;       // Parent category label for the detail page badge
+  distributive?: string;  // e.g., "QDS", "SOC", "TLA", "SCI"
+}
+```
+
+Add descriptions sourced from the Dartmouth ORC catalog (`dartmouth.smartcatalogiq.com`). For topics courses without specific ORC descriptions (COSC 29.05, COSC 89.30, COSC 99.01, HIST 94.06, ASCL 62.03, COLT 57.02, CHEM 7.05, PHIL 1.09), use brief accurate summaries based on the umbrella course description and publicly known context.
+
+Each course gets a `slug` derived from its code (e.g., `"COSC 74"` → `"cosc-74"`, `"ECON 1"` → `"econ-1"`).
+
+The `category` field will be set from the parent `CourseCategory.label` during data population, so each course knows its own category for the detail page.
+
+## Step 2: Add hover effects and links to course cards (`src/app/about/page.tsx`)
+
+Transform the static `<div>` cards into `<Link>` elements with the same hover pattern used by `ProjectCardCompact`:
+- `hover:scale-[1.02] hover:border-accent/40 transition-all duration-200`
+- Link to `/courses/${course.slug}`
+
+Reuse: Pattern from `src/components/sections/ProjectCardCompact.tsx` (line 22):
+```
+className="... transition-all duration-200 hover:scale-[1.02] hover:border-accent/40"
+```
+
+The about page will need `"use client"` **only if** interactive elements are added. Since `<Link>` is a server component, no client conversion is needed — the current server component pattern stays intact.
+
+## Step 3: Create course detail page (`src/app/courses/[slug]/page.tsx`)
+
+Mirror the structure of `src/app/projects/[slug]/page.tsx`:
+- `generateStaticParams()` — iterate all courses from all categories
+- `generateMetadata()` — dynamic title/description from course data
+- Layout: back link → title → code + term + category badge + distributive badge → description paragraphs
+- Reuse existing components: `PageLayout`, `SectionContainer`, `Badge`, `ScrollReveal`
+
+Key differences from project detail page:
+- No tech stack / links section (courses don't have GitHub/live links)
+- Show course code prominently with `font-mono text-accent`
+- Show term formatted nicely (e.g., "24S" → "Spring 2024")
+- Show distributive requirement as a badge if present
+
+### Term formatting helper
+Add a small utility to format term codes:
+- `"24S"` → `"Spring 2024"`, `"24W"` → `"Winter 2024"`, `"24F"` → `"Fall 2024"`, `"24X"` → `"Summer 2024"`
+- `"26W"` → `"Winter 2026"`, etc.
+
+This can live in the detail page file or in `coursework.ts`.
+
+## Course Descriptions (sourced from Dartmouth ORC)
+
+### Computer Science
+| Course | Description |
+|--------|-------------|
+| COSC 99.01 | Independent thesis research under faculty supervision, developing original contributions in computer science. |
+| COSC 89.30 | Advanced topics course studying video understanding — computational methods for analyzing, interpreting, and generating video content using modern deep learning approaches. |
+| COSC 74 | Introduction to statistical modeling and machine learning. Topics include learning theory, supervised and unsupervised machine learning, statistical inference and prediction, and data mining. |
+| COSC 72 | Examines human language through a computational lens, surveying formal models for representing linguistic objects and statistical approaches to learning from natural language data. Covers speech recognition and machine translation. |
+| COSC 70 | Core computational and mathematical techniques for data analysis and physical modeling with applications in computational biology, computer vision, graphics, machine learning, and robotics. |
+| COSC 69.20 | Seminar featuring leading cybersecurity researchers presenting their latest work from across academia, government, and industry. Students read publications and engage with presenters on cutting-edge security research. |
+| COSC 55 | Examines security and privacy challenges from the migration of important social processes to distributed, electronic systems. Covers defining security/privacy, relevant techniques, and practical deployment methods. |
+| COSC 52 | Full-stack web development covering static pages, Internet protocols, layout, markup, event-driven asynchronous programming, deployment, security, scalability, and user experience. Hands-on projects building real-time web apps. |
+| COSC 50 | Techniques for building large, reliable, maintainable, and understandable software systems. Covers UNIX tools, C programming, testing, debugging, and collaborative development through team projects. |
+| COSC 30 | Mathematical foundations of computer science: set theory, logic, proof techniques, combinatorics, probability, number theory, and graph theory with emphasis on CS applications. |
+| COSC 29.05 | Explores digital fabrication tools and techniques including 3D printing, laser cutting, and CNC machining, combining computational design with physical prototyping. |
+| COSC 10 | Computational problem-solving driven by real-world applications, covering abstraction, modularity, data structures, and algorithms through object-oriented programming. |
+
+### Economics
+| Course | Description |
+|--------|-------------|
+| ECON 66 | Seminar on the theory of financial institutions, banking panics, asset price variability, capital market imperfections, monetary policy theory, inflation, and debt. Requires a substantial research paper. |
+| ECON 36 | Decision making under risk and uncertainty, capital budgeting, portfolio theory, valuation of risky assets, capital market efficiency, option pricing, and asymmetric information. |
+| ECON 28 | How government policies affect economic outcomes across environmental protection, social insurance, retirement, healthcare, and poverty reduction. Analyzes taxation, efficiency, and distributional tradeoffs. |
+| ECON 26 | The nature and function of financial intermediaries (banks, mutual funds, insurance) and securities markets (money/capital markets, derivatives). Focuses on liquidity, risk management, and financial regulation. |
+| ECON 25 | Strategies businesses use in pricing, advertising, R&D, and mergers to maximize profits. Examines market competition and antitrust policy through game theory, empirical analysis, and experiments. |
+| ECON 22 | Behavior of the economy as a whole: GNP, unemployment, inflation, and output growth. Develops general equilibrium models with emphasis on expectations, monetary and fiscal policy evaluation. |
+| ECON 21 | Pricing and allocation in the private economy: demand theory, production theory, and price/quantity determination in competitive and noncompetitive markets. |
+| ECON 20 | Statistical analysis of economic data focusing on regression analysis — specification, estimation, and hypothesis testing. Extensive use of STATA for empirical research. |
+| ECON 15 | How politics, economics, and culture shaped modern Chinese economic policy. Covers the Mao period, socialist central planning challenges, and post-Mao market reforms. |
+| ECON 10 | Basic concepts and methods of statistics: descriptive statistics and inference (estimation and hypothesis testing) for single and two-variable analysis, with probability theory. |
+| ECON 1 | Problems and policies of current interest relating to resource use and distribution. Covers supply/demand, industrial competition, labor markets, international trade, and environmental sustainability. |
+
+### Other
+| Course | Description |
+|--------|-------------|
+| HIST 94.06 | Survey of the Roman Empire from its founding through its transformation, examining political, military, social, and cultural dimensions of Roman civilization. |
+| ASCL 62.03 | Exploration of Chinese painting traditions, techniques, and aesthetics across historical periods, examining the cultural and philosophical contexts that shaped this art form. |
+| COLT 57.02 | Traces Italian-American identity through film, literature, and music — from early immigration stereotypes to The Sopranos, The Godfather, and artists like Sinatra and Madonna. |
+| SPAN 9 | Advanced Spanish language course bridging introductory and intermediate levels. Develops grammar, vocabulary, and communication through documentaries, films, and broadcast programs. |
+| CHEM 7.05 | Explores how scientific knowledge is communicated to diverse audiences, examining the role of context, framing, and media in shaping public understanding of science. |
+| ANTH 6 | Major areas of biological anthropology: primate evolution, human species evolution, and modern human diversification. Emphasizes evolutionary theory and biology-culture-environment interactions. |
+| WRIT 5 | Writing-intensive course developing critical thinking through reading and expository argument. Students write analytical papers engaging with challenging texts from multiple disciplines. |
+| ASTR 2 | Survey of contemporary knowledge of stars, galaxies, and the universe. Covers stellar evolution, nucleosynthesis, dark matter, cosmic expansion, and big bang cosmology. |
+| PHIL 1.09 | Introduction to philosophical inquiry through the lens of science and skepticism — examining what distinguishes scientific knowledge from superstition and pseudoscience. |
+
+## Verification
+
+1. Run `npm run dev` and navigate to `/about` — confirm course cards have hover effects and link to `/courses/[slug]`
+2. Click a course card → verify the detail page renders with back link, title, code, term, category badge, distributive badge, and description
+3. Navigate directly to `/courses/cosc-74` (or any slug) — verify it renders correctly
+4. Navigate to a non-existent slug like `/courses/fake` — verify 404 behavior
+5. Check that `npm run build` succeeds (static params generated for all courses)
+
+
+If you need specific details from before exiting plan mode (like exact code snippets, error messages, or content you generated), read the full transcript at: /Users/cameronkeith/.REDACTED.jsonl
+
+If this plan can be broken down into multiple independent tasks, consider using the TeamCreate tool to create a team and parallelize the work.
+
+---
+
+look at my resume and update the projects so that they reflect what I did. Go through each project on my wix site and transfer that information to my projects page: 
+
+https://22ckeith.wixsite.com/mysite-1/projects
+
+Use chrome
+
+---
+
+continue
+
+---
+
+coffeechats is at coffeechats.me now
+
+---
+
+shouldn't we also use some of these main photos in teh hero?
+
+https://22ckeith.wixsite.com/mysite-1
+
+---
+
+[Request interrupted by user for tool use]
+
+---
+
+continue
+
+---
+
+<bash-input>git status</bash-input>
+
+---
+
+<bash-stdout>On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   openspec/changes/migrate-wix-to-nextjs/design.md
+	modified:   openspec/changes/migrate-wix-to-nextjs/proposal.md
+	modified:   src/app/about/page.tsx
+	modified:   src/app/api/agent/route.ts
+	modified:   src/app/contact/page.tsx
+	modified:   src/app/favicon.ico
+	modified:   src/app/golf/page.tsx
+	modified:   src/app/layout.tsx
+	modified:   src/app/page.tsx
+	modified:   src/components/interactive/AsciiSwingAnimation.tsx
+	modified:   src/components/interactive/BackgroundGrid.tsx
+	modified:   src/components/interactive/ChatWidget.tsx
+	modified:   src/components/interactive/PhotoCarousel.tsx
+	modified:   src/components/interactive/SwingCanvas.tsx
+	modified:   src/components/interactive/Terminal.tsx
+	modified:   src/components/sections/GitHubContributions.tsx
+	modified:   src/components/sections/GolfStatCard.tsx
+	modified:   src/components/sections/ProjectCardCompact.tsx
+	modified:   src/components/sections/ProjectCardFeatured.tsx
+	modified:   src/components/sections/ProjectList.tsx
+	modified:   src/content/blog/hello-world.mdx
+	modified:   src/data/about.ts
+	modified:   src/data/ascii-frames.ts
+	modified:   src/data/coursework.ts
+	modified:   src/data/experience.ts
+	modified:   src/data/golf-photos.ts
+	modified:   src/data/golf.ts
+	modified:   src/data/projects.ts
+	modified:   src/lib/agent/graph.ts
+	modified:   src/lib/agent/knowledge.ts
+	modified:   src/styles/globals.css
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	.entire/
+	src/app/courses/
+	src/components/interactive/HomePageClient.tsx
+	src/components/interactive/ScrollProgressBar.tsx
+	src/components/interactive/ScrollSection.tsx
+
+no changes added to commit (use "git add" and/or "git commit -a")</bash-stdout><bash-stderr></bash-stderr>

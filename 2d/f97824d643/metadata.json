@@ -3,8 +3,10 @@
   "checkpoint_id": "2df97824d643",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 4,
+  "checkpoints_count": 7,
   "files_touched": [
+    "src/app/about/page.tsx",
+    "src/app/courses/[slug]/page.tsx",
     "src/app/golf/page.tsx",
     "src/app/page.tsx",
     "src/components/interactive/HomePageClient.tsx",
@@ -15,7 +17,9 @@
     "src/components/sections/ProjectCardCompact.tsx",
     "src/components/sections/ProjectCardFeatured.tsx",
     "src/components/sections/ProjectList.tsx",
+    "src/data/coursework.ts",
     "src/data/golf-photos.ts",
+    "src/data/projects.ts",
     "src/styles/globals.css"
   ],
   "sessions": [
@@ -46,13 +50,20 @@
       "context": "/2d/f97824d643/3/context.md",
       "content_hash": "/2d/f97824d643/3/content_hash.txt",
       "prompt": "/2d/f97824d643/3/prompt.txt"
+    },
+    {
+      "metadata": "/2d/f97824d643/4/metadata.json",
+      "transcript": "/2d/f97824d643/4/full.jsonl",
+      "context": "/2d/f97824d643/4/context.md",
+      "content_hash": "/2d/f97824d643/4/content_hash.txt",
+      "prompt": "/2d/f97824d643/4/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 2136,
-    "cache_creation_tokens": 287483,
-    "cache_read_tokens": 5636945,
-    "output_tokens": 15614,
-    "api_call_count": 96
+    "input_tokens": 2190,
+    "cache_creation_tokens": 433172,
+    "cache_read_tokens": 8115627,
+    "output_tokens": 27989,
+    "api_call_count": 135
   }
 }
