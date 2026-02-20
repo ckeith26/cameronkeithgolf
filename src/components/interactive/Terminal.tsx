@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { useReducedMotion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 
 // ── Types ────────────────────────────────────────────────────────────
@@ -129,16 +130,25 @@ const markdownComponents = {
   li: ({ children }: { children?: React.ReactNode }) => (
     <li className="text-[#e4e4e7]">{children}</li>
   ),
-  a: ({ href, children }: { href?: string; children?: React.ReactNode }) => (
-    <a
-      href={href}
-      className="text-[#10b981] underline hover:text-[#34d399]"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      {children}
-    </a>
-  ),
+  a: ({ href, children }: { href?: string; children?: React.ReactNode }) => {
+    if (href && href.startsWith("/")) {
+      return (
+        <Link href={href} className="text-[#10b981] underline hover:text-[#34d399]">
+          {children}
+        </Link>
+      );
+    }
+    return (
+      <a
+        href={href}
+        className="text-[#10b981] underline hover:text-[#34d399]"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {children}
+      </a>
+    );
+  },
 };
 
 // ── Line Renderers ───────────────────────────────────────────────────
