@@ -108,6 +108,10 @@ function useGridAnimations() {
   15% { opacity: 1; }
   75% { opacity: 1; }
   100% { opacity: 0; }
+}
+@keyframes bg-wave {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }`;
     document.head.appendChild(style);
     return () => { style.remove(); };
@@ -242,6 +246,18 @@ export function BackgroundGrid() {
             !prefersReducedMotion &&
             (isAccent || (color === COLOR_MED && Math.random() < 0.08));
 
+          const col = i % cols;
+          const waveDelay = (col / cols) * 3; // 3s spread across columns
+          const waveDuration = 4 + (col % 5) * 0.4; // slight variation per column
+
+          const animations: string[] = [];
+          if (!prefersReducedMotion) {
+            animations.push(`bg-wave ${waveDuration}s ease-in-out ${waveDelay}s infinite`);
+          }
+          if (shouldTwinkle) {
+            animations.push(`bg-twinkle ${3 + Math.random() * 4}s ease-in-out ${Math.random() * 5}s infinite`);
+          }
+
           return (
             <span
               key={i}
@@ -253,11 +269,8 @@ export function BackgroundGrid() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                ...(shouldTwinkle
-                  ? {
-                      animation: `bg-twinkle ${3 + Math.random() * 4}s ease-in-out infinite`,
-                      animationDelay: `${Math.random() * 5}s`,
-                    }
+                ...(animations.length > 0
+                  ? { animation: animations.join(", ") }
                   : {}),
               }}
             >
