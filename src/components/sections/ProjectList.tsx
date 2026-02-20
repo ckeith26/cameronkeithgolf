@@ -10,19 +10,56 @@ interface ProjectListProps {
   projects: Project[];
 }
 
+const MONTHS: Record<string, number> = {
+  january: 1, february: 2, march: 3, april: 4, may: 5, june: 6,
+  july: 7, august: 8, september: 9, october: 10, november: 11, december: 12,
+};
+
+function parseDateValue(s: string): number {
+  const t = s.trim().toLowerCase();
+  if (t === "present") return Infinity;
+  for (const [month, num] of Object.entries(MONTHS)) {
+    if (t.startsWith(month)) {
+      const year = parseInt(t.match(/\d{4}/)?.[0] || "0");
+      return year * 100 + num;
+    }
+  }
+  const year = parseInt(t);
+  return !isNaN(year) ? year * 100 + 12 : 0;
+}
+
+function getDateBounds(dateStr: string) {
+  const parts = dateStr.split(/\s*[–\-]\s*/);
+  const start = parseDateValue(parts[0]);
+  const end = parts.length > 1 ? parseDateValue(parts[parts.length - 1]) : start;
+  return { start, end };
+}
+
+function sortByDate(list: Project[]): Project[] {
+  return [...list].sort((a, b) => {
+    const aD = getDateBounds(a.date);
+    const bD = getDateBounds(b.date);
+    if (bD.end !== aD.end) return bD.end - aD.end;
+    return bD.start - aD.start;
+  });
+}
+
 export function ProjectList({ projects }: ProjectListProps) {
   const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
-    if (!query.trim()) return projects;
-    const q = query.toLowerCase();
-    return projects.filter(
-      (p) =>
-        p.title.toLowerCase().includes(q) ||
-        p.description.toLowerCase().includes(q) ||
-        p.techStack.some((t) => t.toLowerCase().includes(q)) ||
-        p.category.toLowerCase().includes(q)
-    );
+    const base = query.trim()
+      ? projects.filter((p) => {
+          const q = query.toLowerCase();
+          return (
+            p.title.toLowerCase().includes(q) ||
+            p.description.toLowerCase().includes(q) ||
+            p.techStack.some((t) => t.toLowerCase().includes(q)) ||
+            p.category.toLowerCase().includes(q)
+          );
+        })
+      : projects;
+    return sortByDate(base);
   }, [projects, query]);
 
   const featured = filtered.filter((p) => p.featured);
@@ -68,6 +105,7 @@ export function ProjectList({ projects }: ProjectListProps) {
                 techStack={project.techStack}
                 links={project.links}
                 slug={project.slug}
+                date={project.date}
               />
             </ScrollReveal>
           ))}
@@ -89,6 +127,7 @@ export function ProjectList({ projects }: ProjectListProps) {
                   description={project.description}
                   techStack={project.techStack}
                   slug={project.slug}
+                  date={project.date}
                 />
               </ScrollReveal>
             ))}

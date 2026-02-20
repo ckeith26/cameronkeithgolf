@@ -14,6 +14,7 @@ interface ProjectCardFeaturedProps {
   };
   image?: string;
   slug: string;
+  date?: string;
 }
 
 export function ProjectCardFeatured({
@@ -23,6 +24,7 @@ export function ProjectCardFeatured({
   links = {},
   image,
   slug,
+  date,
 }: ProjectCardFeaturedProps) {
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-lg border border-border bg-background-card transition-all duration-200 hover:scale-[1.02] hover:border-accent/40">
@@ -44,6 +46,9 @@ export function ProjectCardFeatured({
             {title}
           </h3>
         </Link>
+        {date && (
+          <p className="mt-1 text-xs text-foreground-subtle">{date}</p>
+        )}
         <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
           {description}
         </p>
