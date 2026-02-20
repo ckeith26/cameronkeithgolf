@@ -57,11 +57,11 @@ export function SwingCanvas({ className }: SwingCanvasProps) {
     let drawHeight: number;
 
     if (containerAspect > imgAspect) {
-      // Container is wider — fit to height
+      // Container is wider - fit to height
       drawHeight = rect.height;
       drawWidth = drawHeight * imgAspect;
     } else {
-      // Container is taller — fit to width
+      // Container is taller - fit to width
       drawWidth = rect.width;
       drawHeight = drawWidth / imgAspect;
     }

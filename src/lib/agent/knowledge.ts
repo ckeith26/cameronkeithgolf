@@ -68,7 +68,7 @@ function formatExperience(): string {
     .join("\n");
 
   const eduStr = [
-    `${education.school} — ${education.degree}`,
+    `${education.school} - ${education.degree}`,
     `GPA: ${education.gpa} | ${education.dateRange}`,
     `Intended: ${education.intendedGrad}`,
     `High School: ${education.highSchool.name}, ${education.highSchool.location} (${education.highSchool.year})`,

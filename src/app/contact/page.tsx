@@ -20,7 +20,7 @@ export default function ContactPage() {
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-foreground-muted">
             Whether you&apos;re interested in AI research, golf, or building
-            something together &mdash; I&apos;d love to hear from you.
+            something together, I&apos;d love to hear from you.
           </p>
         </ScrollReveal>
       </SectionContainer>

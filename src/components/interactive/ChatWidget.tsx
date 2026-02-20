@@ -16,7 +16,7 @@ const STORAGE_KEY = "ck-chat-messages";
 const GREETING: Message = {
   role: "assistant",
   content:
-    "Hey! I'm **Cam Code** — Cameron's AI assistant. Ask me anything or type `/help` to see available commands.",
+    "Hey! I'm **Cam Code**, Cameron's AI assistant. Ask me anything or type `/help` to see available commands.",
 };
 
 // ── Slash commands ───────────────────────────────────────────────────
@@ -48,7 +48,7 @@ const ROUTE_MAP: Record<string, string> = {
 
 function buildHelpText(): string {
   const lines = Object.entries(SLASH_COMMANDS).map(
-    ([cmd, { description }]) => `\`${cmd}\` — ${description}`
+    ([cmd, { description }]) => `\`${cmd}\` - ${description}`
   );
   return `**Available commands:**\n${lines.join("\n")}`;
 }
@@ -62,7 +62,7 @@ function loadMessages(): Message[] {
       if (parsed.length > 0) return parsed;
     }
   } catch {
-    // Corrupted storage — reset
+    // Corrupted storage - reset
   }
   return [GREETING];
 }
@@ -244,7 +244,7 @@ export function ChatWidget() {
     // Check for slash commands first
     if (trimmed.startsWith("/")) {
       if (handleSlashCommand(trimmed)) return;
-      // Unknown command — show help
+      // Unknown command - show help
       setMessages((prev) => [
         ...prev,
         { role: "user", content: trimmed },
@@ -408,7 +408,7 @@ export function ChatWidget() {
                   </span>
                 </div>
                 <p className="text-[#71717a] font-mono text-[10px]">
-                  cameronkeithgolf.com
+                  camkeith.me
                 </p>
               </div>
             </div>
@@ -631,7 +631,7 @@ export function ChatWidget() {
         </div>
       )}
 
-      {/* Toggle button — Cam Code sparkle */}
+      {/* Toggle button - Cam Code sparkle */}
       <button
         onClick={() => setIsOpen((prev) => !prev)}
         className="fixed bottom-4 right-4 z-50 w-13 h-13 rounded-full bg-[#10b981] text-[#0a0a0a] shadow-lg hover:bg-[#0d9668] hover:scale-105 active:scale-95 transition-all flex items-center justify-center"

@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
                 openResume = true;
               }
             } catch {
-              // Tool output wasn't parseable — ignore
+              // Tool output wasn't parseable - ignore
             }
           }
         }

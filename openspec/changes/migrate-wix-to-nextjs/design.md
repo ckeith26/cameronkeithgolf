@@ -11,7 +11,7 @@ Cameron Keith's personal site needs to move from Wix to a self-hosted platform t
 ### Constraints
 - Must be maintainable by a single person (Cameron)
 - Deployed on Render (not Vercel)
-- Domain: cameronkeithgolf.com
+- Domain: camkeith.me
 - Must load fast — performance is a signal of engineering quality
 - Content should be easy to update without touching component code
 

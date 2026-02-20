@@ -23,11 +23,11 @@ export interface GolfData {
 }
 
 export const golfData: GolfData = {
-  athleticBio: `Golf has been the constant thread running through my life since I first picked up a club as a kid in the Bay Area. What started as weekend rounds with my dad quickly turned into something more serious — early mornings at the range, junior tournaments across California, and eventually a competitive trajectory that would shape how I approach everything else.
+  athleticBio: `Golf has been the constant thread running through my life since I first picked up a club as a kid in the Bay Area. What started as weekend rounds with my dad quickly turned into something more serious: early mornings at the range, junior tournaments across California, and eventually a competitive trajectory that would shape how I approach everything else.
 
 By high school, golf had become both my proving ground and my classroom. Captaining the varsity team at De La Salle, earning AJGA Rolex Scholastic All-American honors, and being named the 2021 Male Junior Olympian of the Year taught me lessons no textbook could: how to perform under pressure, how to stay patient when nothing is going right, and how to find the next marginal gain when you are already near your ceiling.
 
-When it came time to choose a college, I wanted a place where I could compete at the highest level in both golf and academics. Dartmouth was that place. As a member of the NCAA Division I varsity golf team, I have had the chance to compete against the best collegiate players in the country — leading the team at the Alister Mackenzie Invitational at Cal Berkeley and winning the individual title at the Cornell vs. Dartmouth Stroke Play Match. The discipline that four-hour practice sessions and 36-hole tournament days demand is the same discipline that fuels late-night coding sessions and research deadlines. Golf taught me how to compete; Dartmouth taught me what to compete for.`,
+When it came time to choose a college, I wanted a place where I could compete at the highest level in both golf and academics. Dartmouth was that place. As a member of the NCAA Division I varsity golf team, I have had the chance to compete against the best collegiate players in the country, leading the team at the Alister Mackenzie Invitational at Cal Berkeley and winning the individual title at the Cornell vs. Dartmouth Stroke Play Match. The discipline that four-hour practice sessions and 36-hole tournament days demand is the same discipline that fuels late-night coding sessions and research deadlines. Golf taught me how to compete; Dartmouth taught me what to compete for.`,
 
   achievements: [
     {
@@ -37,13 +37,13 @@ When it came time to choose a college, I wanted a place where I could compete at
       year: "2022 – Present",
     },
     {
-      title: "Alister Mackenzie Invitational — Team Leader",
+      title: "Alister Mackenzie Invitational: Team Leader",
       description:
         "Led the Dartmouth team at the prestigious Alister Mackenzie Invitational hosted at Cal Berkeley.",
       year: "2024",
     },
     {
-      title: "Cornell vs. Dartmouth Stroke Play — Individual Winner",
+      title: "Cornell vs. Dartmouth Stroke Play: Individual Winner",
       description:
         "Won the individual title in the Cornell vs. Dartmouth stroke play match.",
       year: "2024",
@@ -61,7 +61,7 @@ When it came time to choose a college, I wanted a place where I could compete at
       year: "2021",
     },
     {
-      title: "Captain, Varsity Golf — De La Salle High School",
+      title: "Captain, Varsity Golf: De La Salle High School",
       description:
         "Led the varsity golf program at De La Salle High School in Concord, California.",
       year: "2021 – 2022",

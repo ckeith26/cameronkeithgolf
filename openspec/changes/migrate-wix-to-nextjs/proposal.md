@@ -2,7 +2,7 @@
 
 ## Why
 
-The current Wix site (cameronkeithgolf.com) is frozen as a junior golf recruiting portfolio from 2022. It doesn't represent Cameron's evolved identity: a Dartmouth D1 athlete who is simultaneously an AI researcher (NeurIPS, IEEE S&P), startup founder (Brama AI), and ML engineer shipping production systems. The site undersells dramatically and uses a platform that limits technical expression. A self-hosted Next.js site built with engineering rigor will authentically represent someone who builds real systems — not a template-user, but someone whose website itself demonstrates craft.
+The current Wix site (camkeith.me) is frozen as a junior golf recruiting portfolio from 2022. It doesn't represent Cameron's evolved identity: a Dartmouth D1 athlete who is simultaneously an AI researcher (NeurIPS, IEEE S&P), startup founder (Brama AI), and ML engineer shipping production systems. The site undersells dramatically and uses a platform that limits technical expression. A self-hosted Next.js site built with engineering rigor will authentically represent someone who builds real systems — not a template-user, but someone whose website itself demonstrates craft.
 
 ## What Changes
 
@@ -19,7 +19,7 @@ The current Wix site (cameronkeithgolf.com) is frozen as a junior golf recruitin
 
 - Affected specs: site-architecture, design-system, interactive-experience, content-management (all new)
 - Affected code: Entire codebase — greenfield Next.js project
-- Domain: cameronkeithgolf.com (user handles Render deployment)
+- Domain: camkeith.me (user handles Render deployment)
 - Content migration: Swing videos and putting highlights preserved; tournament data curated for D1 era
 
 ## Audience Matrix

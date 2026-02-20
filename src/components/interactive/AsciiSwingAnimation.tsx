@@ -86,7 +86,7 @@ export function AsciiSwingAnimation({ className }: AsciiSwingAnimationProps) {
 
   const totalRows = GOLF_LANDSCAPE.length;
 
-  // IntersectionObserver — auto-play on viewport enter
+  // IntersectionObserver - auto-play on viewport enter
   useEffect(() => {
     if (hasStarted) return;
     const el = containerRef.current;

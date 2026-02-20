@@ -3,17 +3,17 @@
 
 /** Color tokens used by the rendering components */
 export const ASCII_COLORS = {
-  golfer: "#a1a1aa",    // zinc-400 — muted figure
-  ball: "#10b981",      // emerald-500 — accent
-  flag: "#10b981",      // emerald-500 — accent
-  ground: "#71717a",    // zinc-500 — subtle
-  terrain: "#3f3f46",   // zinc-700 — contours
+  golfer: "#a1a1aa",    // zinc-400 - muted figure
+  ball: "#10b981",      // emerald-500 - accent
+  flag: "#10b981",      // emerald-500 - accent
+  ground: "#71717a",    // zinc-500 - subtle
+  terrain: "#3f3f46",   // zinc-700 - contours
   default: "#a1a1aa",   // zinc-400
-  node: "#10b981",      // emerald-500 — neural net nodes
-  connection: "#52525b", // zinc-600 — neural net connections
+  node: "#10b981",      // emerald-500 - neural net nodes
+  connection: "#52525b", // zinc-600 - neural net connections
 } as const;
 
-// ── Golf Scene — Panoramic Landscape ─────────────────────
+// ── Golf Scene - Panoramic Landscape ─────────────────────
 // 18 lines tall, max 58 chars wide
 // The golfer region is composited at rows 4-11, cols 10-18
 
@@ -40,7 +40,7 @@ export const GOLF_LANDSCAPE: string[] = [
 
 /** Golfer region: composited onto rows 4-11, starting at col 10 */
 export interface GolferKeyframe {
-  /** Rows of golfer art — composited at GOLFER_ROW_OFFSET */
+  /** Rows of golfer art - composited at GOLFER_ROW_OFFSET */
   rows: string[];
 }
 

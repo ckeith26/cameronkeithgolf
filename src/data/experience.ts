@@ -51,7 +51,7 @@ export const experiences: Experience[] = [
     description:
       "Building AI-powered investment tools to democratize financial research.",
     bullets: [
-      "Designed and built a team of autonomous buy-side AI agents — Portfolio Manager, Fundamentals Analyst, and Risk Manager — that collaborate to construct equity portfolios",
+      "Designed and built a team of autonomous buy-side AI agents (Portfolio Manager, Fundamentals Analyst, and Risk Manager) that collaborate to construct equity portfolios",
       "Architected RAG pipeline with MongoDB vector search for real-time ingestion of SEC filings and market data",
       "Deployed full-stack React application on AWS with CI/CD",
     ],
@@ -79,28 +79,28 @@ export const education = {
   intendedGrad: "MS in Computer Science, 2027",
   citations: [
     {
-      course: "COSC 70 — Foundations of Applied CS",
+      course: "COSC 70: Foundations of Applied CS",
       term: "Fall 2023",
       professor: "Soroush Vosoughi, Assistant Professor of Computer Science",
       description:
         "Cameron demonstrated an impressive mastery of the course material, consistently showcasing a high level of expertise. He was also the winner of the Neural Network competition.",
     },
     {
-      course: "COSC 52 — Full-Stack Web Development",
+      course: "COSC 52: Full-Stack Web Development",
       term: "Spring 2024",
       professor: "Tim Tregubov, Lecturer in Computer Science",
       description:
         "Cameron did extra credit and was a primary contributor on his final team project.",
     },
     {
-      course: "COSC 89.30 — Video Understanding",
+      course: "COSC 89.30: Video Understanding",
       term: "Spring 2024",
       professor: "SouYoung Jin, Assistant Professor of Computer Science",
       description:
         "This course is a research-oriented class that requires students\u2019 participation in paper presentations, discussions, and a final project submitted to a mini-conference. Cameron gave an excellent presentation on a CVPR 2020 paper titled \u2018Oops! Predicting Unintentional Action in Video\u2019 and actively participated in class discussions with thoughtful insights. For the final project, Cameron\u2019s team proposed an approach to systematically analyze the impacts of outliers on video classification performance. Their GitHub repository and homepage were exceptionally well documented and praised by peer reviewers.",
     },
     {
-      course: "COSC 55 — Security and Privacy",
+      course: "COSC 55: Security and Privacy",
       term: "Spring 2025",
       professor: "Omar S. Saydjari, Dartmouth Faculty",
       description:

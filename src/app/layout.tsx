@@ -20,12 +20,12 @@ export const metadata: Metadata = {
   },
   description:
     "Dartmouth D1 golfer, AI researcher, and startup founder. Building at the intersection of athletic discipline and engineering depth.",
-  metadataBase: new URL("https://cameronkeithgolf.com"),
+  metadataBase: new URL("https://camkeith.me"),
   openGraph: {
     title: "Cameron Keith | D1 Golfer & AI Engineer",
     description:
       "Dartmouth D1 golfer, AI researcher, and startup founder. Building at the intersection of athletic discipline and engineering depth.",
-    url: "https://cameronkeithgolf.com",
+    url: "https://camkeith.me",
     siteName: "Cameron Keith",
     locale: "en_US",
     type: "website",
