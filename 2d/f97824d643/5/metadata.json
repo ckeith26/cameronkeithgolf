@@ -1,0 +1,35 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "2df97824d643",
+  "session_id": "a1a8ae30-061c-4651-8324-ee19ef819d53",
+  "strategy": "manual-commit",
+  "created_at": "2026-02-20T23:01:51.916174Z",
+  "branch": "main",
+  "checkpoints_count": 5,
+  "files_touched": [
+    "openspec/changes/migrate-wix-to-nextjs/design.md",
+    "openspec/changes/migrate-wix-to-nextjs/proposal.md",
+    "src/app/layout.tsx",
+    "src/components/interactive/ChatWidget.tsx",
+    "src/components/interactive/HomePageClient.tsx",
+    "src/components/interactive/Terminal.tsx",
+    "src/lib/agent/graph.ts"
+  ],
+  "agent": "Claude Code",
+  "token_usage": {
+    "input_tokens": 75,
+    "cache_creation_tokens": 358841,
+    "cache_read_tokens": 4656715,
+    "output_tokens": 15348,
+    "api_call_count": 49
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-02-20T23:01:51.747291Z",
+    "agent_lines": 472,
+    "human_added": 755,
+    "human_modified": 63,
+    "human_removed": 0,
+    "total_committed": 1280,
+    "agent_percentage": 36.875
+  }
+}
