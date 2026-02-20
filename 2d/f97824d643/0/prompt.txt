@@ -1,0 +1,9 @@
+add dates ranges to the project cards
+
+---
+
+[Request interrupted by user]
+
+---
+
+add dates ranges to the project cards and order them by date finished then date started

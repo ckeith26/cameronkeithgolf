@@ -1,0 +1,33 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "2df97824d643",
+  "session_id": "96c948db-a24c-427f-b1e5-07a11d02d60d",
+  "strategy": "manual-commit",
+  "created_at": "2026-02-20T23:01:00.595435Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/app/page.tsx",
+    "src/components/sections/ProjectCardCompact.tsx",
+    "src/components/sections/ProjectCardFeatured.tsx",
+    "src/components/sections/ProjectList.tsx"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "1a49ce33-9a02-4f56-ac7b-7fa76ae2f35e",
+  "token_usage": {
+    "input_tokens": 19,
+    "cache_creation_tokens": 43270,
+    "cache_read_tokens": 843048,
+    "output_tokens": 1906,
+    "api_call_count": 17
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-02-20T23:01:00.580131Z",
+    "agent_lines": 0,
+    "human_added": 372,
+    "human_modified": 91,
+    "human_removed": 0,
+    "total_committed": 432,
+    "agent_percentage": 0
+  }
+}

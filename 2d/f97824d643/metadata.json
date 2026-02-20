@@ -1,0 +1,29 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "2df97824d643",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/app/page.tsx",
+    "src/components/sections/ProjectCardCompact.tsx",
+    "src/components/sections/ProjectCardFeatured.tsx",
+    "src/components/sections/ProjectList.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/2d/f97824d643/0/metadata.json",
+      "transcript": "/2d/f97824d643/0/full.jsonl",
+      "context": "/2d/f97824d643/0/context.md",
+      "content_hash": "/2d/f97824d643/0/content_hash.txt",
+      "prompt": "/2d/f97824d643/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 19,
+    "cache_creation_tokens": 43270,
+    "cache_read_tokens": 843048,
+    "output_tokens": 1906,
+    "api_call_count": 17
+  }
+}
