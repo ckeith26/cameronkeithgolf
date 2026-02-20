@@ -3,7 +3,6 @@ export const golfPhotos = [
   { src: "/images/golf/ajga-san-jose-2.jpeg", alt: "Golf photo" },
   { src: "/images/golf/ajga-san-jose.jpg", alt: "Golf photo" },
   { src: "/images/golf/img_0229.jpg", alt: "Golf photo" },
-  { src: "/images/golf/img_0624.jpg", alt: "Golf photo" },
   { src: "/images/golf/img_0799.jpg", alt: "Golf photo" },
   { src: "/images/golf/img_0996.jpg", alt: "Golf photo" },
   { src: "/images/golf/img_1216.jpg", alt: "Golf photo" },
