@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "41bfc0fcd775",
+  "session_id": "a1a8ae30-061c-4651-8324-ee19ef819d53",
+  "strategy": "manual-commit",
+  "created_at": "2026-02-21T02:36:36.320432Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "amplify.yml"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "894007eb-f40e-41fa-a0de-556529ede047",
+  "checkpoint_transcript_start": 594,
+  "transcript_lines_at_start": 594,
+  "token_usage": {
+    "input_tokens": 6,
+    "cache_creation_tokens": 147434,
+    "cache_read_tokens": 440379,
+    "output_tokens": 290,
+    "api_call_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-02-21T02:36:36.137545Z",
+    "agent_lines": 18,
+    "human_added": 39,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 57,
+    "agent_percentage": 31.57894736842105
+  }
+}
