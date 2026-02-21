@@ -98,9 +98,10 @@ export function HomePageClient() {
         id="hero"
         fullHeight
         parallax
-        className="flex items-center justify-center"
+        className="relative"
       >
-        <div className="text-center mx-auto">
+        <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
           {prefersReducedMotion ? (
             <h1 className="text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
               Cameron Keith
@@ -145,35 +146,35 @@ export function HomePageClient() {
             matters.
           </motion.p>
 
-        </div>
-
-        {/* Scroll indicator - centered bouncing arrow */}
-        {!prefersReducedMotion && (
-          <motion.button
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer bg-transparent border-none p-2"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2, duration: 0.6 }}
-            onClick={() => document.getElementById("terminal")?.scrollIntoView({ behavior: "smooth" })}
-            aria-label="Scroll to next section"
-          >
-            <motion.svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-foreground-subtle"
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          {/* Scroll indicator */}
+          {!prefersReducedMotion && (
+            <motion.button
+              className="mt-10 mx-auto block cursor-pointer bg-transparent border-none p-2"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.2, duration: 0.6 }}
+              onClick={() => document.getElementById("terminal")?.scrollIntoView({ behavior: "smooth" })}
+              aria-label="Scroll to next section"
             >
-              <path d="M6 9l6 6 6-6" />
-            </motion.svg>
-          </motion.button>
-        )}
+              <motion.svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-foreground-subtle"
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <path d="M6 9l6 6 6-6" />
+              </motion.svg>
+            </motion.button>
+          )}
+        </div>
+        </div>
       </ScrollSection>
 
       {/* ── 2. Terminal ── */}
@@ -306,10 +307,10 @@ export function HomePageClient() {
       {/* ── 7. Contact CTA ── */}
       <ScrollSection
         id="contact"
-        className="py-24"
+        className="pt-8 pb-24"
       >
         <ScrollReveal>
-          <div className="relative text-center">
+          <div className="relative text-center flex flex-col items-center">
             <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">
               Let&apos;s Connect
             </h2>
