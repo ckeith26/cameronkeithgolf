@@ -29,9 +29,6 @@ type TerminalLine =
 const STORAGE_KEY = "ck-terminal-messages";
 
 const BOOT_LINES: { content: string; style?: "command" | "muted" | "success" | "greeting"; delay: number }[] = [
-  { content: "✓ Cameron Keith | D1 Golfer / AI Engineer / Dartmouth '26", style: "success", delay: 300 },
-  { content: "✓ Ready", style: "success", delay: 300 },
-  { content: "", style: undefined, delay: 200 },
   { content: "Hey! I'm Cam Code, Cameron's AI assistant.", style: "greeting", delay: 200 },
   { content: "Ask me anything or type /help for commands.", style: "greeting", delay: 200 },
 ];
