@@ -98,9 +98,9 @@ export function HomePageClient() {
         id="hero"
         fullHeight
         parallax
-        className="flex items-center"
+        className="flex items-center justify-center"
       >
-        <div className="py-24">
+        <div className="text-center mx-auto">
           {prefersReducedMotion ? (
             <h1 className="text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
               Cameron Keith
@@ -126,7 +126,7 @@ export function HomePageClient() {
           )}
 
           <motion.p
-            className="mt-4 max-w-xl text-lg text-foreground-muted"
+            className="mt-4 max-w-xl mx-auto text-lg text-foreground-muted"
             initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
@@ -135,7 +135,7 @@ export function HomePageClient() {
           </motion.p>
 
           <motion.p
-            className="mt-4 max-w-2xl text-base leading-relaxed text-foreground-muted"
+            className="mt-4 max-w-2xl mx-auto text-base leading-relaxed text-foreground-muted"
             initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.7 }}

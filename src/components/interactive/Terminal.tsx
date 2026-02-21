@@ -29,12 +29,11 @@ type TerminalLine =
 const STORAGE_KEY = "ck-terminal-messages";
 
 const BOOT_LINES: { content: string; style?: "command" | "muted" | "success" | "greeting"; delay: number }[] = [
-  { content: "⠋ Loading context...", style: "muted", delay: 800 },
-  { content: "✓ Cameron Keith | D1 Golfer / AI Engineer / Dartmouth '26", style: "success", delay: 500 },
-  { content: "✓ Ready", style: "success", delay: 600 },
-  { content: "", style: undefined, delay: 300 },
-  { content: "Hey! I'm Cam Code, Cameron's AI assistant.", style: "greeting", delay: 400 },
-  { content: "Ask me anything or type /help for commands.", style: "greeting", delay: 300 },
+  { content: "✓ Cameron Keith | D1 Golfer / AI Engineer / Dartmouth '26", style: "success", delay: 300 },
+  { content: "✓ Ready", style: "success", delay: 300 },
+  { content: "", style: undefined, delay: 200 },
+  { content: "Hey! I'm Cam Code, Cameron's AI assistant.", style: "greeting", delay: 200 },
+  { content: "Ask me anything or type /help for commands.", style: "greeting", delay: 200 },
 ];
 
 const SLASH_COMMANDS: Record<string, { description: string; action: "navigate" | "resume" | "clear" | "help" }> = {
@@ -233,19 +232,28 @@ function renderNavLine(line: Extract<TerminalLine, { type: "nav" }>) {
   );
 }
 
-function renderLoadingLine() {
+const THINKING_MESSAGES = [
+  "Thinking",
+  "Reasoning",
+  "Searching context",
+  "Processing",
+];
+
+const SPINNER_FRAMES = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏";
+
+function LoadingLine() {
+  const [frame, setFrame] = useState(0);
+  const [msgIndex] = useState(() => Math.floor(Math.random() * THINKING_MESSAGES.length));
+
+  useEffect(() => {
+    const id = setInterval(() => setFrame((f) => (f + 1) % SPINNER_FRAMES.length), 80);
+    return () => clearInterval(id);
+  }, []);
+
   return (
-    <div className="flex items-center gap-1 py-1 pl-1">
-      {[0, 1, 2].map((i) => (
-        <span
-          key={i}
-          className="inline-block w-1.5 h-1.5 rounded-full bg-[#a1a1aa]"
-          style={{
-            animation: "terminal-dot-bounce 1.2s ease-in-out infinite",
-            animationDelay: `${i * 0.15}s`,
-          }}
-        />
-      ))}
+    <div className="flex items-center gap-2 py-1 pl-1">
+      <span className="text-[#10b981] text-sm">{SPINNER_FRAMES[frame]}</span>
+      <span className="text-[#71717a] text-sm">{THINKING_MESSAGES[msgIndex]}...</span>
     </div>
   );
 }
@@ -298,7 +306,7 @@ function renderLine(line: TerminalLine, index: number, showCursor?: boolean) {
     case "nav":
       return <div key={index}>{renderNavLine(line)}</div>;
     case "loading":
-      return <div key={index}>{renderLoadingLine()}</div>;
+      return <div key={index}><LoadingLine /></div>;
     case "welcome":
       return <div key={index}>{renderWelcomeLine()}</div>;
   }
@@ -371,7 +379,7 @@ export function Terminal({ className }: TerminalProps) {
               return updated;
             });
             scrollToBottom();
-            const delay = 30 + Math.random() * 30;
+            const delay = 15 + Math.random() * 15;
             setTimeout(typeNextChar, delay);
           } else {
             resolve();
@@ -403,14 +411,14 @@ export function Terminal({ className }: TerminalProps) {
     const command = "cam";
     setLines([{ type: "text", content: "$ ", style: "command" }]);
     for (let i = 0; i < command.length; i++) {
-      await new Promise((r) => setTimeout(r, 100 + Math.random() * 80));
+      await new Promise((r) => setTimeout(r, 60 + Math.random() * 40));
       setLines([{ type: "text", content: `$ ${command.slice(0, i + 1)}`, style: "command" }]);
     }
-    await new Promise((r) => setTimeout(r, 600));
+    await new Promise((r) => setTimeout(r, 300));
 
     // Show welcome box
     setLines((prev) => [...prev, { type: "welcome" }]);
-    await new Promise((r) => setTimeout(r, 800));
+    await new Promise((r) => setTimeout(r, 400));
 
     // Boot sequence
     for (const bootLine of BOOT_LINES) {
@@ -472,6 +480,27 @@ export function Terminal({ className }: TerminalProps) {
     }
   }, [bootComplete, scrollToBottom]);
 
+  // ── Global keyboard capture: focus terminal on any typing ──────────
+
+  useEffect(() => {
+    if (!bootComplete) return;
+
+    function handleGlobalKeydown(e: KeyboardEvent) {
+      // Ignore if user is focused on another input/textarea
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || (e.target as HTMLElement)?.isContentEditable) return;
+
+      // Ignore modifier-only keys and special keys
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.key.length > 1 && e.key !== "Backspace") return;
+
+      inputRef.current?.focus();
+    }
+
+    window.addEventListener("keydown", handleGlobalKeydown);
+    return () => window.removeEventListener("keydown", handleGlobalKeydown);
+  }, [bootComplete]);
+
   // ── Slash command handler ──────────────────────────────────────────
 
   const handleSlashCommand = useCallback(
@@ -498,7 +527,10 @@ export function Terminal({ className }: TerminalProps) {
         }
 
         case "clear":
-          setLines([]);
+          setLines([
+            { type: "text", content: "$ cam", style: "command" },
+            { type: "welcome" },
+          ]);
           setMessages([]);
           localStorage.removeItem(STORAGE_KEY);
           break;
