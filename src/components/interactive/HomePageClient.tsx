@@ -216,7 +216,7 @@ export function HomePageClient() {
       {/* ── 2. Terminal ── */}
       <ScrollSection
         id="terminal"
-        className="py-24"
+        className="py-16 md:py-24"
       >
         <Terminal />
       </ScrollSection>
@@ -224,7 +224,7 @@ export function HomePageClient() {
       {/* ── 3. Story Teaser ── */}
       <ScrollSection
         id="story"
-        className="py-24"
+        className="py-16 md:py-24"
         parallax
       >
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:gap-16">
@@ -269,7 +269,7 @@ export function HomePageClient() {
       {/* ── 4. Experience Highlights ── */}
       <ScrollSection
         id="experience"
-        className="py-24"
+        className="py-16 md:py-24"
       >
         <ScrollReveal>
           <h2 className="mb-8 text-2xl font-semibold text-foreground sm:text-3xl">
@@ -319,7 +319,7 @@ export function HomePageClient() {
       {/* ── 5. Featured Projects ── */}
       <ScrollSection
         id="projects"
-        className="py-24"
+        className="py-16 md:py-24"
       >
         <ScrollReveal>
           <h2 className="mb-8 text-2xl font-semibold text-foreground sm:text-3xl">
@@ -348,7 +348,7 @@ export function HomePageClient() {
       {/* ── 6. Golf Achievements ── */}
       <ScrollSection
         id="golf"
-        className="py-24"
+        className="py-16 md:py-24"
       >
         <ScrollReveal>
           <h2 className="mb-2 text-2xl font-semibold text-foreground sm:text-3xl">
@@ -381,7 +381,7 @@ export function HomePageClient() {
       {/* ── 7. Contact CTA ── */}
       <ScrollSection
         id="contact"
-        className="pt-8 pb-24"
+        className="pt-6 pb-16 md:pt-8 md:pb-24"
       >
         <ScrollReveal>
           <div className="relative text-center flex flex-col items-center">
