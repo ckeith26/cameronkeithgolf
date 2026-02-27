@@ -1,0 +1,39 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "f52380c74b58",
+  "session_id": "f9bbb98e-d0ad-4f92-9305-39b848a53a18",
+  "strategy": "manual-commit",
+  "created_at": "2026-02-27T05:48:35.31426Z",
+  "branch": "main",
+  "checkpoints_count": 22,
+  "files_touched": [
+    ".claude/commands/openspec/apply.md",
+    ".claude/commands/openspec/archive.md",
+    ".claude/commands/openspec/proposal.md",
+    "openspec/AGENTS.md",
+    "public/images/cameron-keith.jpg",
+    "public/images/cameron-speaking.jpg",
+    "public/images/golf/ajga-rolex-award.png",
+    "src/components/interactive/AsciiHeroMatrix.tsx",
+    "src/components/interactive/HomePageClient.tsx",
+    "src/components/interactive/PhotoCarousel.tsx"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "29e7ad07-055b-4ae3-9260-05d06525cd39",
+  "token_usage": {
+    "input_tokens": 147,
+    "cache_creation_tokens": 181939,
+    "cache_read_tokens": 9915561,
+    "output_tokens": 31495,
+    "api_call_count": 101
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-02-27T05:48:34.745217Z",
+    "agent_lines": 0,
+    "human_added": 2776,
+    "human_modified": 1800,
+    "human_removed": 0,
+    "total_committed": 2776,
+    "agent_percentage": 0
+  }
+}

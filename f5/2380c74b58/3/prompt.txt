@@ -1,0 +1,135 @@
+let's move this so it has the text dropdown animation and renders on the left side of the screen
+
+---
+
+[Image: source: REDACTED 2026-02-26 at 10.51.48 PM.png]
+
+[Image: source: REDACTED 2026-02-26 at 10.52.12 PM.png]
+
+---
+
+have the images fade in and out on the edges of the carousol
+
+---
+
+[Image: source: REDACTED 2026-02-26 at 11.23.26 PM.png]
+
+---
+
+why does this image show up while my page is loading?
+
+---
+
+[Image: source: REDACTED 2026-02-26 at 11.27.30 PM.png]
+
+---
+
+also on mobile, resize the ascii animation so it just shows a cropped version of the video (of me swinging)
+
+---
+
+[Image: source: REDACTED 2026-02-26 at 11.28.22 PM.png]
+
+---
+
+put the down arrow under the middle of the name component
+
+---
+
+[Image: source: REDACTED 2026-02-26 at 11.32.26 PM.png]
+
+---
+
+now center the arrow under the name instead of under the viewport
+
+---
+
+i actually meant to put it belwo the I am a Dartmouth student-athlete section
+
+---
+
+reduce the width of the I am a dartmouth student-athlete ...
+
+---
+
+[Image: source: /Users/cameronkeith/Pictures/Photos Library.REDACTED.jpeg]
+
+---
+
+in builder competitor researcher section, we should include my profile picture. Does it make sense to have it on the right side of the screen on desktop and render it below on mobile?
+
+---
+
+[Image: source: /Users/cameronkeith/Pictures/Photos Library.REDACTED.jpeg]
+
+---
+
+where is the best place for this photo on my page?
+
+---
+
+[Image: source: /Users/cameronkeith/Downloads/IMG_1595.jpeg]
+
+---
+
+sure
+
+---
+
+make it bigger
+
+---
+
+make this photo bigger (you may have to crop the sides of it first
+
+---
+
+[Image: source: REDACTED 2026-02-27 at 12.27.04 AM.png]
+
+---
+
+let's also shift it a little left now
+
+---
+
+[Image: source: REDACTED 2026-02-27 at 12.34.45 AM.png]
+
+---
+
+shift it further left
+
+---
+
+ok we overdid a little bit
+
+---
+
+[Image: source: REDACTED 2026-02-27 at 12.36.29 AM.png]
+
+---
+
+keep going. I should be more centered
+
+---
+
+[Image: source: REDACTED 2026-02-27 at 12.37.15 AM.png]
+
+---
+
+touch more in the same direction
+
+---
+
+let's also make that photo the same ratio as teh one below it and make it the saem size on the screen
+
+---
+
+should I also put education in the home page?
+
+---
+
+yeah add it as a timeline entry
+
+---
+
+actually lets revert this for now
