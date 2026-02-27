@@ -3,7 +3,7 @@ import { HomePageClient } from "@/components/interactive/HomePageClient";
 
 export default function Home() {
   return (
-    <PageLayout>
+    <PageLayout offsetHeader={false}>
       <HomePageClient />
     </PageLayout>
   );

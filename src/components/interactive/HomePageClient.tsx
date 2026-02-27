@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 
@@ -7,6 +8,7 @@ import { ScrollSection } from "./ScrollSection";
 import { ScrollProgressBar } from "./ScrollProgressBar";
 import { ScrollReveal } from "./ScrollReveal";
 import { Terminal } from "./Terminal";
+import { AsciiHeroMatrix } from "./AsciiHeroMatrix";
 import { TimelineEntry } from "@/components/sections/TimelineEntry";
 import { ProjectCardFeatured } from "@/components/sections/ProjectCardFeatured";
 import { GolfStatCard } from "@/components/sections/GolfStatCard";
@@ -62,22 +64,6 @@ function SocialIcon({ icon }: { icon: string }) {
   }
 }
 
-/* ── Hero letter animation ───────────────────── */
-
-const nameLetters = "Cameron Keith".split("");
-
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.03 },
-  },
-};
-
-const letterVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" as const } },
-};
-
 /* ── Component ───────────────────────────────── */
 
 export function HomePageClient() {
@@ -97,83 +83,133 @@ export function HomePageClient() {
       <ScrollSection
         id="hero"
         fullHeight
+        fullBleed
         parallax
         className="relative"
       >
-        <div className="flex min-h-screen items-center justify-center">
-        <div className="text-center">
-          {prefersReducedMotion ? (
-            <h1 className="text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
-              Cameron Keith
-            </h1>
-          ) : (
-            <motion.h1
-              className="text-5xl font-bold tracking-tight text-foreground sm:text-6xl"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              {nameLetters.map((letter, i) => (
-                <motion.span
-                  key={i}
-                  variants={letterVariants}
-                  className="inline-block"
-                  style={letter === " " ? { width: "0.3em" } : undefined}
-                >
-                  {letter === " " ? "\u00A0" : letter}
-                </motion.span>
-              ))}
-            </motion.h1>
-          )}
+        <div className="relative h-[100svh] w-full">
+          <AsciiHeroMatrix />
 
-          <motion.p
-            className="mt-4 max-w-xl mx-auto text-lg text-foreground-muted"
-            initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-          >
-            D1 Golfer. AI Engineer. Building at the intersection.
-          </motion.p>
-
-          <motion.p
-            className="mt-4 max-w-2xl mx-auto text-base leading-relaxed text-foreground-muted"
-            initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.7 }}
-          >
-            I am a Dartmouth student-athlete, AI researcher, and startup founder
-            turning the discipline of competitive golf into engineering that
-            matters.
-          </motion.p>
-
-          {/* Scroll indicator */}
-          {!prefersReducedMotion && (
-            <motion.button
-              className="mt-10 mx-auto block cursor-pointer bg-transparent border-none p-2"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.2, duration: 0.6 }}
-              onClick={() => document.getElementById("terminal")?.scrollIntoView({ behavior: "smooth" })}
-              aria-label="Scroll to next section"
-            >
-              <motion.svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="text-foreground-subtle"
-                animate={{ y: [0, 8, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          {/* Desktop copy overlay */}
+          <div className="absolute inset-0 z-10 hidden items-center px-8 sm:px-12 md:flex md:px-20">
+            <div className="flex max-w-2xl flex-col text-left">
+              <motion.h1
+                className="text-5xl sm:text-6xl md:text-7xl font-bold text-foreground tracking-tight"
+                initial={prefersReducedMotion ? undefined : { opacity: 0, y: -40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 2.3, ease: "easeOut" }}
               >
-                <path d="M6 9l6 6 6-6" />
-              </motion.svg>
-            </motion.button>
-          )}
-        </div>
+                Cameron Keith
+              </motion.h1>
+
+              <motion.p
+                className="mt-6 text-lg text-foreground/90"
+                initial={prefersReducedMotion ? undefined : { opacity: 0, y: -30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 2.6, ease: "easeOut" }}
+              >
+                D1 Golfer. AI Engineer. Building at the intersection.
+              </motion.p>
+
+              <motion.p
+                className="mt-4 max-w-sm text-base leading-relaxed text-foreground-muted"
+                initial={prefersReducedMotion ? undefined : { opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 2.8, ease: "easeOut" }}
+              >
+                I am a Dartmouth student-athlete, AI researcher, and startup founder
+                turning the discipline of competitive golf into engineering that
+                matters.
+              </motion.p>
+
+              {/* Scroll arrow — centered under the name */}
+              {!prefersReducedMotion && (
+                <motion.button
+                  className="mt-8 cursor-pointer self-center border-none bg-transparent p-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 3.2, duration: 0.6 }}
+                  onClick={() => document.getElementById("terminal")?.scrollIntoView({ behavior: "smooth" })}
+                  aria-label="Scroll to next section"
+                >
+                  <motion.svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="text-foreground-subtle"
+                    animate={{ y: [0, 8, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </motion.svg>
+                </motion.button>
+              )}
+            </div>
+          </div>
+          
+          {/* Mobile copy overlay above swing */}
+          <div className="absolute inset-x-0 top-24 z-10 px-6 sm:px-8 md:hidden">
+            <div className="relative mx-auto max-w-sm text-left">
+              <motion.h1
+                className="text-4xl font-bold text-foreground tracking-tight sm:text-5xl"
+                initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.15 }}
+              >
+                Cameron Keith
+              </motion.h1>
+
+              <motion.p
+                className="mt-2 text-base leading-snug text-foreground/90 sm:text-lg"
+                initial={prefersReducedMotion ? undefined : { opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, delay: 0.25 }}
+              >
+                D1 Golfer. AI Engineer. Building at the intersection.
+              </motion.p>
+
+              <motion.p
+                className="mt-2 text-sm leading-snug text-foreground-muted sm:text-base sm:leading-relaxed"
+                initial={prefersReducedMotion ? undefined : { opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, delay: 0.35 }}
+              >
+                Dartmouth student-athlete, AI researcher, and startup founder.
+              </motion.p>
+
+              {!prefersReducedMotion && (
+                <motion.button
+                  className="mt-4 block cursor-pointer bg-transparent border-none p-1"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5, duration: 0.4 }}
+                  onClick={() => document.getElementById("terminal")?.scrollIntoView({ behavior: "smooth" })}
+                  aria-label="Scroll to next section"
+                >
+                  <motion.svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="text-foreground-subtle"
+                    animate={{ y: [0, 8, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </motion.svg>
+                </motion.button>
+              )}
+            </div>
+          </div>
         </div>
       </ScrollSection>
 
@@ -191,24 +227,43 @@ export function HomePageClient() {
         className="py-24"
         parallax
       >
-        <ScrollReveal>
-          <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">
-            {aboutContent.headline}
-          </h2>
-        </ScrollReveal>
-        <ScrollReveal delay={0.1}>
-          <p className="mt-6 max-w-3xl text-base leading-relaxed text-foreground-muted">
-            {aboutContent.intro}
-          </p>
-        </ScrollReveal>
-        <ScrollReveal delay={0.2}>
-          <p className="mt-4 max-w-3xl text-base leading-relaxed text-foreground-muted">
-            {storyExcerpt}
-          </p>
-        </ScrollReveal>
-        <ScrollReveal delay={0.3}>
-          <SectionLink href="/about">Read the full story</SectionLink>
-        </ScrollReveal>
+        <div className="flex flex-col gap-10 md:flex-row md:items-start md:gap-16">
+          {/* Text — left on desktop */}
+          <div className="flex-1">
+            <ScrollReveal>
+              <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">
+                {aboutContent.headline}
+              </h2>
+            </ScrollReveal>
+            <ScrollReveal delay={0.1}>
+              <p className="mt-6 max-w-3xl text-base leading-relaxed text-foreground-muted">
+                {aboutContent.intro}
+              </p>
+            </ScrollReveal>
+            <ScrollReveal delay={0.2}>
+              <p className="mt-4 max-w-3xl text-base leading-relaxed text-foreground-muted">
+                {storyExcerpt}
+              </p>
+            </ScrollReveal>
+            <ScrollReveal delay={0.3}>
+              <SectionLink href="/about">Read the full story</SectionLink>
+            </ScrollReveal>
+          </div>
+
+          {/* Profile photo — right on desktop, below on mobile */}
+          <ScrollReveal delay={0.2}>
+            <div className="relative mx-auto w-56 flex-shrink-0 overflow-hidden rounded-2xl border border-border sm:w-64 md:mx-0 md:w-72">
+              <Image
+                src="/images/cameron-keith.jpg"
+                alt="Cameron Keith"
+                width={380}
+                height={475}
+                className="h-auto w-full object-cover"
+                sizes="(max-width: 640px) 224px, (max-width: 768px) 256px, 288px"
+              />
+            </div>
+          </ScrollReveal>
+        </div>
       </ScrollSection>
 
       {/* ── 4. Experience Highlights ── */}
@@ -221,25 +276,44 @@ export function HomePageClient() {
             Experience
           </h2>
         </ScrollReveal>
-        <div className="relative">
-          {/* Timeline line */}
-          <div className="absolute left-[7px] top-0 bottom-0 w-px bg-border" />
-          {currentExperiences.map((exp, i) => (
-            <ScrollReveal key={`${exp.org}-${exp.role}`} delay={i * 0.1}>
-              <TimelineEntry
-                role={exp.role}
-                org={exp.org}
-                dateRange={exp.dateRange}
-                description={exp.description}
-                bullets={exp.bullets.slice(0, 1)}
-                current={exp.current}
-              />
+        <div className="flex flex-col gap-10 md:flex-row md:items-start md:gap-16">
+          {/* Timeline — left on desktop */}
+          <div className="flex-1">
+            <div className="relative">
+              {/* Timeline line */}
+              <div className="absolute left-[7px] top-0 bottom-0 w-px bg-border" />
+              {currentExperiences.map((exp, i) => (
+                <ScrollReveal key={`${exp.org}-${exp.role}`} delay={i * 0.1}>
+                  <TimelineEntry
+                    role={exp.role}
+                    org={exp.org}
+                    dateRange={exp.dateRange}
+                    description={exp.description}
+                    bullets={exp.bullets.slice(0, 1)}
+                    current={exp.current}
+                  />
+                </ScrollReveal>
+              ))}
+            </div>
+            <ScrollReveal delay={0.3}>
+              <SectionLink href="/work">View full timeline</SectionLink>
             </ScrollReveal>
-          ))}
+          </div>
+
+          {/* Speaking photo — right on desktop, below on mobile */}
+          <ScrollReveal delay={0.2}>
+            <div className="relative mx-auto w-56 flex-shrink-0 overflow-hidden rounded-2xl border border-border sm:w-64 md:mx-0 md:w-72">
+              <Image
+                src="/images/cameron-speaking.jpg"
+                alt="Cameron Keith speaking at an awards ceremony"
+                width={576}
+                height={720}
+                className="h-auto w-full object-cover"
+                sizes="(max-width: 640px) 224px, (max-width: 768px) 256px, 288px"
+              />
+            </div>
+          </ScrollReveal>
         </div>
-        <ScrollReveal delay={0.3}>
-          <SectionLink href="/work">View full timeline</SectionLink>
-        </ScrollReveal>
       </ScrollSection>
 
       {/* ── 5. Featured Projects ── */}

@@ -13,6 +13,7 @@ interface ScrollSectionProps {
   children: React.ReactNode;
   className?: string;
   fullHeight?: boolean;
+  fullBleed?: boolean;
   parallax?: boolean;
   parallaxOffset?: number;
   gradientTop?: string;
@@ -24,6 +25,7 @@ export function ScrollSection({
   children,
   className = "",
   fullHeight = false,
+  fullBleed = false,
   parallax = false,
   parallaxOffset = 20,
   gradientTop,
@@ -44,6 +46,7 @@ export function ScrollSection({
   );
 
   const shouldAnimate = parallax && !prefersReducedMotion;
+  const containerClass = fullBleed ? "w-full" : "mx-auto max-w-[1200px] px-6 md:px-8";
 
   return (
     <section
@@ -60,13 +63,13 @@ export function ScrollSection({
 
       {shouldAnimate ? (
         <motion.div
-          className="mx-auto max-w-[1200px] px-6 md:px-8"
+          className={containerClass}
           style={{ y }}
         >
           {children}
         </motion.div>
       ) : (
-        <div className="mx-auto max-w-[1200px] px-6 md:px-8">{children}</div>
+        <div className={containerClass}>{children}</div>
       )}
 
       {gradientBottom && (
