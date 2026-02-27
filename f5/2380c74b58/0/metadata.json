@@ -1,0 +1,41 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "f52380c74b58",
+  "session_id": "1e3b39e5-30ca-4426-858a-24f708a12c6c",
+  "strategy": "manual-commit",
+  "created_at": "2026-02-27T05:48:24.837891Z",
+  "branch": "main",
+  "checkpoints_count": 14,
+  "files_touched": [
+    ".claude/commands/openspec/apply.md",
+    ".claude/commands/openspec/archive.md",
+    ".claude/commands/openspec/proposal.md",
+    "openspec/AGENTS.md",
+    "public/images/golf/ajga-rolex-award.png",
+    "public/images/golf/cameron-bear-statue.jpeg",
+    "src/app/golf/page.tsx",
+    "src/components/interactive/ChatWidget.tsx",
+    "src/components/interactive/PhotoCarousel.tsx",
+    "src/components/interactive/Terminal.tsx",
+    "src/components/sections/GolfStatCard.tsx",
+    "src/styles/globals.css"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "dbbc491e-499e-4a4b-a4b8-1abf9bde560f",
+  "token_usage": {
+    "input_tokens": 110,
+    "cache_creation_tokens": 250973,
+    "cache_read_tokens": 6654514,
+    "output_tokens": 5401,
+    "api_call_count": 80
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-02-27T05:48:24.603069Z",
+    "agent_lines": 0,
+    "human_added": 3204,
+    "human_modified": 1636,
+    "human_removed": 0,
+    "total_committed": 3481,
+    "agent_percentage": 0
+  }
+}

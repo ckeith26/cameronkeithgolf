@@ -1,0 +1,279 @@
+can you change the invoke chatbot to use streaming instead of invoke
+
+---
+
+slow down the gallery
+
+---
+
+ya, it still doesn't change the speed of the carousol
+
+---
+
+it still doesn't change the speed
+
+---
+
+Let's add some more commands in my cam code. I think it would be cool if we included a /skills command haha. Look at all of my skills on LInkedin: https://www.linkedin.com/in/cam-keith/details/skills/
+
+---
+
+remove any duplicates, rank them by importance, and discard any irrelevant ones: 
+
+Full Stack, LLM/VLMs, Python, PyTorch, LangGraph, ML, RAG, Pandas, Docker, MongoDB, MySQL, Redis, React, JS, C, AWS 
+AI Agents
+AI Agents
+GUARD-AI: Governance and Untrusted Action Runtime Defense for AI AgentsGUARD-AI: Governance and Untrusted Action Runtime Defense for AI Agents
+LangGraph
+LangGraph
+Company logo
+Founder at Brama AIFounder at Brama AI
+Cybersecurity
+Cybersecurity
+GUARD-AI: Governance and Untrusted Action Runtime Defense for AI AgentsGUARD-AI: Governance and Untrusted Action Runtime Defense for AI Agents
+PKI
+PKI
+Company logo
+AI and ML Intern at KeyfactorAI and ML Intern at Keyfactor
+Public Key Cryptography
+Public Key Cryptography
+WhisperChain+: End to End Encrypted Messaging with Role-Based Control and AccountabilityWhisperChain+: End to End Encrypted Messaging with Role-Based Control and Accountability
+Information Security
+Information Security
+WhisperChain+: End to End Encrypted Messaging with Role-Based Control and AccountabilityWhisperChain+: End to End Encrypted Messaging with Role-Based Control and Accountability
+AI Video Classification
+AI Video Classification
+Do Outliers Matter? Assessing the Impact of Outliers on Video ClassificationsDo Outliers Matter? Assessing the Impact of Outliers on Video Classifications
+Docker
+Docker
+Do Outliers Matter? Assessing the Impact of Outliers on Video ClassificationsDo Outliers Matter? Assessing the Impact of Outliers on Video Classifications
+Google API
+Google API
+Youtube CloneYoutube Clone
+React Native
+React Native
+MovesMoves
+MongoDB
+MongoDB
+MongoDB Collaborative Notes Website with AuthMongoDB Collaborative Notes Website with Auth
+MovesMoves
+JavaScript
+JavaScript
+Masters Golf Buzz-feed WebsiteMasters Golf Buzz-feed Website
+Firebase Collaborative Notes WebsiteFirebase Collaborative Notes Website
+MongoDB Collaborative Notes Website with AuthMongoDB Collaborative Notes Website with Auth
+Show all 4 details
+HTML
+HTML
+Masters Golf Buzz-feed WebsiteMasters Golf Buzz-feed Website
+Firebase Collaborative Notes WebsiteFirebase Collaborative Notes Website
+MongoDB Collaborative Notes Website with AuthMongoDB Collaborative Notes Website with Auth
+Show all 4 details
+React.js
+React.js
+Masters Golf Buzz-feed WebsiteMasters Golf Buzz-feed Website
+Firebase Collaborative Notes WebsiteFirebase Collaborative Notes Website
+MongoDB Collaborative Notes Website with AuthMongoDB Collaborative Notes Website with Auth
+Show all 6 details
+Quantitative Research
+Quantitative Research
+Company logo
+Quantitative Research / AI Intern at Trivariate Research, L.P.Quantitative Research / AI Intern at Trivariate Research, L.P.
+Machine Learning
+Machine Learning
+Company logo
+2 experiences across Keyfactor and 1 other company2 experiences across Keyfactor and 1 other company
+Company logo
+Dartmouth CollegeDartmouth College
+Company logo
+Artificial Intelligence and Machine LearningArtificial Intelligence and Machine Learning
+Show all 13 details
+Artificial Intelligence (AI)
+Artificial Intelligence (AI)
+Company logo
+5 experiences across Keyfactor and 4 other companies5 experiences across Keyfactor and 4 other companies
+Company logo
+Artificial Intelligence and Machine LearningArtificial Intelligence and Machine Learning
+REIT Quantitative Time Series ModelREIT Quantitative Time Series Model
+Show all 5 details
+Quantitative Finance
+Quantitative Finance
+Company logo
+3 experiences across Trivariate Research, L.P. and 2 other companies3 experiences across Trivariate Research, L.P. and 2 other companies
+REIT Quantitative Time Series ModelREIT Quantitative Time Series Model
+Python (Programming Language)
+Python (Programming Language)
+Company logo
+3 experiences across Keyfactor and 2 other companies3 experiences across Keyfactor and 2 other companies
+Company logo
+2 educational experiences at Dartmouth College and 1 other school2 educational experiences at Dartmouth College and 1 other school
+Company logo
+Artificial Intelligence and Machine LearningArtificial Intelligence and Machine Learning
+Show all 15 details
+PyTorch
+PyTorch
+Company logo
+AI Researcher at Dartmouth CollegeAI Researcher at Dartmouth College
+SQL
+SQL
+Amazon Web Services (AWS)
+Amazon Web Services (AWS)
+Company logo
+2 experiences across Brama AI and 1 other company2 experiences across Brama AI and 1 other company
+Firebase
+Firebase
+Company logo
+Member and Startup Founder at Magnuson Center for Entrepreneurship at DartmouthMember and Startup Founder at Magnuson Center for Entrepreneurship at Dartmouth
+Firebase Collaborative Notes WebsiteFirebase Collaborative Notes Website
+Xcode
+Xcode
+Texas Hold-Em Xcode AppTexas Hold-Em Xcode App
+Engineering
+Engineering
+CO2 Race Car CompetitionCO2 Race Car Competition
+Neural Networks
+Neural Networks
+Neural Network Digit ClassifierNeural Network Digit Classifier
+Linear Algebra
+Linear Algebra
+Neural Network Digit ClassifierNeural Network Digit Classifier
+Poisson Image BlendingPoisson Image Blending
+Forensic License Plate RecognitionForensic License Plate Recognition
+Hidden Markov Models
+Hidden Markov Models
+Parts of Speech PredictorParts of Speech Predictor
+Data Structures
+Data Structures
+Tiny Search EngineTiny Search Engine
+Software Infrastructure
+Software Infrastructure
+Company logo
+Software Engineer at JPMorgan Chase & Co.Software Engineer at JPMorgan Chase & Co.
+Business Strategy
+Business Strategy
+Company logo
+2 experiences across Brama AI and 1 other company2 experiences across Brama AI and 1 other company
+Stock Market Analysis
+Stock Market Analysis
+Company logo
+2 experiences across Brama AI and 1 other company2 experiences across Brama AI and 1 other company
+Business Integrity
+Business Integrity
+Company logo
+Member at Scholars of FinanceMember at Scholars of Finance
+Entrepreneurship
+Entrepreneurship
+Company logo
+Member and Startup Founder at Magnuson Center for Entrepreneurship at DartmouthMember and Startup Founder at Magnuson Center for Entrepreneurship at Dartmouth
+Team Leadership
+Team Leadership
+Company logo
+2 experiences across Magnuson Center for Entrepreneurship at Dartmouth and 1 other company2 experiences across Magnuson Center for Entrepreneurship at Dartmouth and 1 other company
+Startup Development
+Startup Development
+Company logo
+2 experiences across Brama AI and 1 other company2 experiences across Brama AI and 1 other company
+Communication
+Communication
+Company logo
+2 experiences across Magnuson Center for Entrepreneurship at Dartmouth and 1 other company2 experiences across Magnuson Center for Entrepreneurship at Dartmouth and 1 other company
+Marketing
+Marketing
+Company logo
+Member and Startup Founder at Magnuson Center for Entrepreneurship at DartmouthMember and Startup Founder at Magnuson Center for Entrepreneurship at Dartmouth
+Java
+Java
+Company logo
+2 educational experiences at Dartmouth College and 1 other school2 educational experiences at Dartmouth College and 1 other school
+Problem Solving via Object Oriented ProgrammingProblem Solving via Object Oriented Programming
+Parts of Speech PredictorParts of Speech Predictor
+Web Scraping
+Web Scraping
+Company logo
+Artificial Intelligence and Machine LearningArtificial Intelligence and Machine Learning
+REIT Quantitative Time Series ModelREIT Quantitative Time Series Model
+Swift (Programming Language)
+Swift (Programming Language)
+Texas Hold-Em Xcode AppTexas Hold-Em Xcode App
+C (Programming Language)
+C (Programming Language)
+Company logo
+Dartmouth CollegeDartmouth College
+Software Design and ImplementationSoftware Design and Implementation
+Tiny Search EngineTiny Search Engine
+Linux
+Linux
+Passed LinkedIn Skill AssessmentPassed LinkedIn Skill Assessment
+Software Design and ImplementationSoftware Design and Implementation
+Object-Oriented Programming (OOP)
+Object-Oriented Programming (OOP)
+Passed LinkedIn Skill AssessmentPassed LinkedIn Skill Assessment
+Autodesk Fusion 360
+Autodesk Fusion 360
+Company logo
+De La Salle High SchoolDe La Salle High School
+CO2 Race Car CompetitionCO2 Race Car Competition
+Software Development
+Software Development
+Company logo
+Dartmouth CollegeDartmouth College
+Problem Solving via Object Oriented ProgrammingProblem Solving via Object Oriented Programming
+Software Design and ImplementationSoftware Design and Implementation
+Show all 5 details
+Environmental, Social, and Governance (ESG)
+Environmental, Social, and Governance (ESG)
+Company logo
+Member at Scholars of Finance
+
+---
+
+[Image: source: REDACTED 2026-02-26 at 10.49.39 PM.png]
+
+---
+
+[Image: source: REDACTED 2026-02-26 at 10.59.34 PM.png]
+
+---
+
+Yes, it is running, but I still don't see the changes on the home page cam code
+
+---
+
+are there any other commands I should include?
+
+---
+
+all of them sound good.
+
+---
+
+Add this photo to the golf section on the right side '/Users/cameronkeith/Pictures/Photos                                                                       │
+ │   Library.REDACTED.jpeg'
+
+---
+
+make it bigger
+
+---
+
+the bottom of the image should be in line with the paragraph and the to pof the image should line up with Golf
+
+---
+
+[Image: source: REDACTED 2026-02-27 at 12.08.10 AM.png]
+
+---
+
+where should this photo go?
+
+---
+
+[Image: source: /Users/cameronkeith/Downloads/Screenshot 2026-02-27 at 12.26.00 AM.png]
+
+---
+
+remove these buttons from cam code on the home page
+
+---
+
+[Image: source: REDACTED 2026-02-27 at 12.40.46 AM.png]
