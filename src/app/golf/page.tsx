@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { SectionContainer } from "@/components/ui/SectionContainer";
 import { GolfStatCard } from "@/components/sections/GolfStatCard";
@@ -19,21 +20,35 @@ export default function GolfPage() {
   return (
     <PageLayout>
       <SectionContainer className="py-16 md:py-24">
-        <ScrollReveal>
-          <h1 className="text-4xl font-bold tracking-tight text-foreground">
-            Golf
-          </h1>
-        </ScrollReveal>
-
-        {/* Athletic Bio */}
-        <div className="mt-8 max-w-3xl space-y-4">
-          {bioParagraphs.map((paragraph, i) => (
-            <ScrollReveal key={i} delay={i * 0.1}>
-              <p className="text-base leading-relaxed text-foreground-muted">
-                {paragraph}
-              </p>
+        {/* Heading + Bio + Photo */}
+        <div className="flex flex-col gap-10 lg:flex-row lg:items-end">
+          <div className="lg:flex-1">
+            <ScrollReveal>
+              <h1 className="text-4xl font-bold tracking-tight text-foreground">
+                Golf
+              </h1>
             </ScrollReveal>
-          ))}
+            <div className="mt-8 space-y-4">
+              {bioParagraphs.map((paragraph, i) => (
+                <ScrollReveal key={i} delay={i * 0.1}>
+                  <p className="text-base leading-relaxed text-foreground-muted">
+                    {paragraph}
+                  </p>
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
+          <ScrollReveal delay={0.2}>
+            <div className="relative w-full max-w-sm shrink-0 self-stretch overflow-hidden rounded-lg border border-border lg:w-96">
+              <Image
+                src="/images/golf/cameron-bear-statue.jpeg"
+                alt="Cameron Keith at the bear statue on a golf course"
+                width={600}
+                height={800}
+                className="h-full w-full object-cover"
+              />
+            </div>
+          </ScrollReveal>
         </div>
 
         {/* Photo Gallery */}
@@ -64,6 +79,9 @@ export default function GolfPage() {
                 {...(achievement.title === "NCAA D1 Varsity Golf" && {
                   logo: "/dartmouth-big-green.svg",
                   href: "https://dartmouthsports.com/sports/mens-golf/roster/cameron-keith/40950",
+                })}
+                {...(achievement.title === "AJGA Rolex Scholastic All-American" && {
+                  image: "/images/golf/ajga-rolex-award.png",
                 })}
               />
             </ScrollReveal>
@@ -129,7 +147,18 @@ export default function GolfPage() {
                           {result.rating}
                         </td>
                         <td className="whitespace-nowrap px-4 py-3 text-right font-medium text-foreground">
-                          {result.score}
+                          {result.score.split(" - ").map((round, j, arr) => {
+                            const num = parseInt(round, 10);
+                            const isUnderPar = !isNaN(num) && num < result.par;
+                            return (
+                              <span key={j}>
+                                <span className={isUnderPar ? "text-red-500" : ""}>
+                                  {round}
+                                </span>
+                                {j < arr.length - 1 && " - "}
+                              </span>
+                            );
+                          })}
                         </td>
                         <td className={`whitespace-nowrap px-4 py-3 text-right font-medium ${
                           result.finish.startsWith("1 ") ? "text-accent" : "text-foreground-muted"

@@ -6,21 +6,29 @@ interface GolfStatCardProps {
   description?: string;
   logo?: string;
   href?: string;
+  image?: string;
 }
 
-export function GolfStatCard({ label, value, description, logo, href }: GolfStatCardProps) {
+export function GolfStatCard({ label, value, description, logo, href, image }: GolfStatCardProps) {
   const content = (
-    <div className={`flex h-full flex-col rounded-lg border border-border bg-background-card p-5 text-center${href ? " transition-all duration-200 hover:border-accent/40" : ""}`}>
-      <p className="text-2xl font-bold text-accent">{value}</p>
-      <p className="mt-1 inline-flex items-center justify-center gap-2 font-medium text-foreground">
-        {logo && (
-          <Image src={logo} alt="" width={20} height={20} className="inline-block h-5 w-5" />
-        )}
-        {label}
-      </p>
-      {description && (
-        <p className="mt-auto pt-1 text-sm text-foreground-muted">{description}</p>
+    <div className={`flex h-full flex-col rounded-lg border border-border bg-background-card overflow-hidden${href ? " transition-all duration-200 hover:border-accent/40" : ""}`}>
+      {image && (
+        <div className="relative aspect-[4/3] w-full">
+          <Image src={image} alt={label} fill className="object-cover" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
+        </div>
       )}
+      <div className="p-5 text-center flex flex-col flex-1">
+        <p className="text-2xl font-bold text-accent">{value}</p>
+        <p className="mt-1 inline-flex items-center justify-center gap-2 font-medium text-foreground">
+          {logo && (
+            <Image src={logo} alt="" width={20} height={20} className="inline-block h-5 w-5" />
+          )}
+          {label}
+        </p>
+        {description && (
+          <p className="mt-auto pt-1 text-sm text-foreground-muted">{description}</p>
+        )}
+      </div>
     </div>
   );
 
