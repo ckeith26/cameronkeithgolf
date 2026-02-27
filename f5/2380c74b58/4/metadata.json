@@ -1,0 +1,33 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "f52380c74b58",
+  "session_id": "3a3abe9f-ffa9-418b-9df4-91e31f914f53",
+  "strategy": "manual-commit",
+  "created_at": "2026-02-27T05:49:49.015052Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    ".claude/commands/openspec/apply.md",
+    ".claude/commands/openspec/archive.md",
+    ".claude/commands/openspec/proposal.md",
+    "openspec/AGENTS.md"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "9f013e60-ae16-4dc9-99c5-7e20093cb98b",
+  "token_usage": {
+    "input_tokens": 1913,
+    "cache_creation_tokens": 120956,
+    "cache_read_tokens": 1456644,
+    "output_tokens": 1939,
+    "api_call_count": 29
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-02-27T05:49:48.944102Z",
+    "agent_lines": 0,
+    "human_added": 2130,
+    "human_modified": 64,
+    "human_removed": 0,
+    "total_committed": 2130,
+    "agent_percentage": 0
+  }
+}
