@@ -4,13 +4,11 @@ import { useEffect, useRef } from "react";
 import { useReducedMotion } from "framer-motion";
 
 const FALLBACK_IMAGE = "/images/hero-first-frame.jpg";
-const VIDEO_SOURCE = "/videos/video.mp4";
+const PRECOMPUTED_ASCII_SOURCE = "/ascii/hero-swing-ascii-v2.json";
 const ASCII_RAMP = " .'`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
 const TARGET_FPS = 60;
-const SOURCE_FPS = 60;
+const SOURCE_FPS = 30;
 const PLAYBACK_RATE = 0.8;
-const PLAYBACK_START_SEC = 0.43;
-const PLAYBACK_END_SEC = 2.35;
 const CELL_SIZE_DESKTOP = 8;
 const CELL_SIZE_MOBILE = 6;
 const SOURCE_ZOOM = 1.16;
@@ -33,8 +31,65 @@ interface AsciiCell {
   subjectMask: number;
 }
 
+interface EncodedAsciiProfile {
+  cols: number;
+  rows: number;
+  frames: string[];
+}
+
+interface EncodedAsciiDataset {
+  version: number;
+  frameCount: number;
+  clipDurationSec: number;
+  profiles: {
+    desktop: EncodedAsciiProfile;
+    mobile: EncodedAsciiProfile;
+  };
+}
+
+interface DecodedAsciiProfile {
+  cols: number;
+  rows: number;
+  frames: Uint8Array[];
+}
+
+interface DecodedAsciiDataset {
+  frameCount: number;
+  clipDurationMs: number;
+  profiles: {
+    desktop: DecodedAsciiProfile;
+    mobile: DecodedAsciiProfile;
+  };
+}
+
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
+}
+
+function decodeBase64ToBytes(encoded: string) {
+  const binary = atob(encoded);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return bytes;
+}
+
+function decodeAsciiDataset(dataset: EncodedAsciiDataset): DecodedAsciiDataset {
+  const decodeProfile = (profile: EncodedAsciiProfile): DecodedAsciiProfile => ({
+    cols: profile.cols,
+    rows: profile.rows,
+    frames: profile.frames.map((frame) => decodeBase64ToBytes(frame)),
+  });
+
+  return {
+    frameCount: dataset.frameCount,
+    clipDurationMs: dataset.clipDurationSec * 1000,
+    profiles: {
+      desktop: decodeProfile(dataset.profiles.desktop),
+      mobile: decodeProfile(dataset.profiles.mobile),
+    },
+  };
 }
 
 function drawCoverImage(
@@ -71,8 +126,8 @@ export function AsciiHeroMatrix() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const offscreenRef = useRef<HTMLCanvasElement | null>(null);
   const fallbackImageRef = useRef<HTMLImageElement | null>(null);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const hasVideoRef = useRef(false);
+  const precomputedRef = useRef<DecodedAsciiDataset | null>(null);
+  const precomputedStartRef = useRef(0);
   const revealedRef = useRef(false);
   const cellsRef = useRef<AsciiCell[]>([]);
   const luminanceRef = useRef<Float32Array | null>(null);
@@ -97,6 +152,7 @@ export function AsciiHeroMatrix() {
     let animationFrameId = 0;
     let lastRenderTime = 0;
     let lastSourceTime = 0;
+    let cancelled = false;
     const renderInterval = 1000 / TARGET_FPS;
     const sourceInterval = 1000 / SOURCE_FPS;
 
@@ -159,12 +215,8 @@ export function AsciiHeroMatrix() {
       }
     };
 
-    const sampleSourceToAscii = (sourceImage: HTMLImageElement | HTMLVideoElement) => {
-      if (sourceImage instanceof HTMLImageElement) {
-        if (!sourceImage.complete || sourceImage.naturalWidth === 0 || sourceImage.naturalHeight === 0) return;
-      } else {
-        if (sourceImage.videoWidth === 0 || sourceImage.videoHeight === 0 || sourceImage.readyState < 2) return;
-      }
+    const sampleSourceToAscii = (sourceImage: HTMLImageElement) => {
+      if (!sourceImage.complete || sourceImage.naturalWidth === 0 || sourceImage.naturalHeight === 0) return;
       ensureLayout();
       if (colsRef.current === 0 || rowsRef.current === 0) return;
 
@@ -222,57 +274,95 @@ export function AsciiHeroMatrix() {
       }
     };
 
+    const applyPrecomputedFrame = (frameIndex: number) => {
+      const dataset = precomputedRef.current;
+      if (!dataset) return;
+      ensureLayout();
+      if (colsRef.current === 0 || rowsRef.current === 0) return;
+
+      const isMobileViewport = viewportRef.current.width < 768;
+      const profile = isMobileViewport ? dataset.profiles.mobile : dataset.profiles.desktop;
+      if (profile.frames.length === 0) return;
+
+      const normalizedIndex = ((frameIndex % profile.frames.length) + profile.frames.length) % profile.frames.length;
+      const frame = profile.frames[normalizedIndex];
+      const cols = colsRef.current;
+      const rows = rowsRef.current;
+      const cells = cellsRef.current;
+      const coverScale = Math.max(cols / profile.cols, rows / profile.rows);
+      const sampleWidth = profile.cols * coverScale;
+      const sampleHeight = profile.rows * coverScale;
+      const offsetX = (cols - sampleWidth) * 0.5;
+      const offsetY = (rows - sampleHeight) * 0.5;
+      const xMap = new Int32Array(cols);
+      const yMap = new Int32Array(rows);
+
+      for (let x = 0; x < cols; x++) {
+        const mappedX = Math.floor((x - offsetX) / coverScale);
+        xMap[x] = Math.max(0, Math.min(profile.cols - 1, mappedX));
+      }
+      for (let y = 0; y < rows; y++) {
+        const mappedY = Math.floor((y - offsetY) / coverScale);
+        yMap[y] = Math.max(0, Math.min(profile.rows - 1, mappedY));
+      }
+
+      for (let y = 0; y < rows; y++) {
+        const sourceY = yMap[y];
+        const sourceRowOffset = sourceY * profile.cols;
+        for (let x = 0; x < cols; x++) {
+          const sourceX = xMap[x];
+          const sourceIndex = (sourceRowOffset + sourceX) * 4;
+          const cell = cells[y * cols + x];
+          cell.charIndex = Math.min(ASCII_RAMP.length - 1, frame[sourceIndex]);
+          cell.gray = frame[sourceIndex + 1];
+          cell.alpha = frame[sourceIndex + 2] / 255;
+          cell.subjectMask = frame[sourceIndex + 3] / 255;
+        }
+      }
+    };
+
+    const getCurrentFrameIndex = (timeMs: number) => {
+      const dataset = precomputedRef.current;
+      if (!dataset || dataset.frameCount === 0) return 0;
+      const slowedClipDuration = dataset.clipDurationMs / Math.max(PLAYBACK_RATE, 0.01);
+      const loopDuration = Math.max(1, slowedClipDuration);
+      const elapsed = timeMs - precomputedStartRef.current;
+      const looped = ((elapsed % loopDuration) + loopDuration) % loopDuration;
+      return Math.floor((looped / loopDuration) * dataset.frameCount);
+    };
+
     const fallbackImage = new Image();
     fallbackImage.src = FALLBACK_IMAGE;
     fallbackImageRef.current = fallbackImage;
 
     const onFallbackLoad = () => {
-      if (!hasVideoRef.current) {
+      if (!precomputedRef.current) {
         sampleSourceToAscii(fallbackImage);
+        revealCanvas();
       }
     };
     fallbackImage.addEventListener("load", onFallbackLoad);
 
-    const video = document.createElement("video");
-    video.src = VIDEO_SOURCE;
-    video.muted = true;
-    video.playsInline = true;
-    video.preload = "auto";
-    video.loop = false;
-    videoRef.current = video;
-
-    const onVideoReady = () => {
-      if (video.videoWidth === 0 || video.videoHeight === 0) return;
-      hasVideoRef.current = true;
-      revealCanvas();
-      video.playbackRate = PLAYBACK_RATE;
-      if (!prefersReducedMotion) {
-        if (video.currentTime < PLAYBACK_START_SEC || video.currentTime > PLAYBACK_END_SEC) {
-          video.currentTime = PLAYBACK_START_SEC;
-        }
-        void video.play().catch(() => undefined);
-      } else {
-        video.pause();
-        video.currentTime = PLAYBACK_START_SEC;
-      }
-      sampleSourceToAscii(video);
-    };
-
-    const onTimeUpdate = () => {
-      if (!prefersReducedMotion && video.currentTime >= PLAYBACK_END_SEC) {
-        video.currentTime = PLAYBACK_START_SEC;
+    const loadPrecomputedFrames = async () => {
+      try {
+        const response = await fetch(PRECOMPUTED_ASCII_SOURCE, { cache: "force-cache" });
+        if (!response.ok) return;
+        const encoded = (await response.json()) as EncodedAsciiDataset;
+        if (cancelled) return;
+        precomputedRef.current = decodeAsciiDataset(encoded);
+        precomputedStartRef.current = performance.now();
+        applyPrecomputedFrame(0);
+        revealCanvas();
+      } catch {
+        // Fallback image path already handles graceful degradation.
       }
     };
-
-    video.addEventListener("loadeddata", onVideoReady);
-    video.addEventListener("canplay", onVideoReady);
-    video.addEventListener("timeupdate", onTimeUpdate);
+    void loadPrecomputedFrames();
 
     const onResize = () => {
       ensureLayout();
-      const sourceVideo = videoRef.current;
-      if (hasVideoRef.current && sourceVideo) {
-        sampleSourceToAscii(sourceVideo);
+      if (precomputedRef.current) {
+        applyPrecomputedFrame(getCurrentFrameIndex(performance.now()));
       } else if (fallbackImageRef.current) {
         sampleSourceToAscii(fallbackImageRef.current);
       }
@@ -284,30 +374,13 @@ export function AsciiHeroMatrix() {
       animationFrameId = requestAnimationFrame(render);
       if (colsRef.current === 0 || rowsRef.current === 0 || cellsRef.current.length === 0) return;
 
-      const sourceVideo = videoRef.current;
-      if (hasVideoRef.current && sourceVideo) {
-        if (!prefersReducedMotion) {
-          if (sourceVideo.playbackRate !== PLAYBACK_RATE) {
-            sourceVideo.playbackRate = PLAYBACK_RATE;
-          }
-          if (sourceVideo.paused) {
-            void sourceVideo.play().catch(() => undefined);
-          }
-          if (sourceVideo.currentTime < PLAYBACK_START_SEC || sourceVideo.currentTime >= PLAYBACK_END_SEC) {
-            sourceVideo.currentTime = PLAYBACK_START_SEC;
-          }
-          if (!lastSourceTime) lastSourceTime = time;
-          const sourceDelta = time - lastSourceTime;
-          if (sourceDelta >= sourceInterval) {
-            lastSourceTime = time - (sourceDelta % sourceInterval);
-            sampleSourceToAscii(sourceVideo);
-          }
-        } else {
-          sourceVideo.pause();
-          if (Math.abs(sourceVideo.currentTime - PLAYBACK_START_SEC) > 0.04) {
-            sourceVideo.currentTime = PLAYBACK_START_SEC;
-          }
-          sampleSourceToAscii(sourceVideo);
+      if (precomputedRef.current) {
+        const frameTime = prefersReducedMotion ? precomputedStartRef.current : time;
+        if (!lastSourceTime) lastSourceTime = time;
+        const sourceDelta = time - lastSourceTime;
+        if (sourceDelta >= sourceInterval) {
+          lastSourceTime = time - (sourceDelta % sourceInterval);
+          applyPrecomputedFrame(getCurrentFrameIndex(frameTime));
         }
       }
 
@@ -361,13 +434,8 @@ export function AsciiHeroMatrix() {
     animationFrameId = requestAnimationFrame(render);
 
     return () => {
+      cancelled = true;
       fallbackImage.removeEventListener("load", onFallbackLoad);
-      video.removeEventListener("loadeddata", onVideoReady);
-      video.removeEventListener("canplay", onVideoReady);
-      video.removeEventListener("timeupdate", onTimeUpdate);
-      video.pause();
-      video.removeAttribute("src");
-      video.load();
       window.removeEventListener("resize", onResize);
       cancelAnimationFrame(animationFrameId);
     };
