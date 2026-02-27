@@ -3,7 +3,7 @@
   "checkpoint_id": "f52380c74b58",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 15,
+  "checkpoints_count": 16,
   "files_touched": [
     ".claude/commands/openspec/apply.md",
     ".claude/commands/openspec/archive.md",
@@ -33,13 +33,20 @@
       "context": "/f5/2380c74b58/1/context.md",
       "content_hash": "/f5/2380c74b58/1/content_hash.txt",
       "prompt": "/f5/2380c74b58/1/prompt.txt"
+    },
+    {
+      "metadata": "/f5/2380c74b58/2/metadata.json",
+      "transcript": "/f5/2380c74b58/2/full.jsonl",
+      "context": "/f5/2380c74b58/2/context.md",
+      "content_hash": "/f5/2380c74b58/2/content_hash.txt",
+      "prompt": "/f5/2380c74b58/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 119,
-    "cache_creation_tokens": 301425,
-    "cache_read_tokens": 6852906,
-    "output_tokens": 5467,
-    "api_call_count": 85
+    "input_tokens": 126,
+    "cache_creation_tokens": 326908,
+    "cache_read_tokens": 6997583,
+    "output_tokens": 5539,
+    "api_call_count": 90
   }
 }

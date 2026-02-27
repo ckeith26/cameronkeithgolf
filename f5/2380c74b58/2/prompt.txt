@@ -1,0 +1,1 @@
+update my results in golf to show as red if the score is less than the par on that row
