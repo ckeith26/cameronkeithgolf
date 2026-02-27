@@ -20,11 +20,17 @@ const GREETING: Message = {
 };
 
 // ── Slash commands ───────────────────────────────────────────────────
-const SLASH_COMMANDS: Record<
-  string,
-  { description: string; action: "navigate" | "resume" | "clear" | "help" }
-> = {
+type CommandAction = "navigate" | "resume" | "clear" | "help" | "skills" | "socials" | "whoami" | "stats" | "source" | "email";
+
+const SLASH_COMMANDS: Record<string, { description: string; action: CommandAction }> = {
   "/help": { description: "Show available commands", action: "help" },
+  "/skills": { description: "View Cameron's technical skills", action: "skills" },
+  "/socials": { description: "GitHub, LinkedIn, X links", action: "socials" },
+  "/whoami": { description: "Quick bio", action: "whoami" },
+  "/stats": { description: "Golf highlights", action: "stats" },
+  "/email": { description: "Get Cameron's email", action: "email" },
+  "/source": { description: "View site source code", action: "source" },
+  "/resume": { description: "Open Cameron's resume", action: "resume" },
   "/clear": { description: "Clear conversation", action: "clear" },
   "/home": { description: "Go to home page", action: "navigate" },
   "/about": { description: "Go to about page", action: "navigate" },
@@ -33,8 +39,49 @@ const SLASH_COMMANDS: Record<
   "/golf": { description: "Go to golf page", action: "navigate" },
   "/blog": { description: "Go to blog", action: "navigate" },
   "/contact": { description: "Go to contact page", action: "navigate" },
-  "/resume": { description: "Open Cameron's resume", action: "resume" },
 };
+
+function buildSkillsText(): string {
+  return [
+    "**AI & ML** - AI Agents, LLMs/VLMs, PyTorch, LangGraph, RAG, Neural Networks, Video Classification",
+    "**Programming** - Python, JavaScript, Java, C, Swift, SQL",
+    "**Web & Full Stack** - React, React Native, MongoDB, MySQL, Redis, Firebase",
+    "**Infrastructure** - Docker, AWS, Linux",
+    "**Security** - Cybersecurity, PKI, Public Key Cryptography",
+    "**Data & Quant** - Pandas, Quantitative Research, Quantitative Finance, Web Scraping",
+    "**Fundamentals** - Data Structures, OOP, Linear Algebra, Hidden Markov Models",
+    "**Business** - Entrepreneurship, Startup Development, Business Strategy, Team Leadership",
+  ].join("\n");
+}
+
+function buildSocialsText(): string {
+  return [
+    "**GitHub** - github.com/ckeith26",
+    "**LinkedIn** - linkedin.com/in/cam-keith",
+    "**X** - x.com/camkeithgolf",
+  ].join("\n");
+}
+
+function buildWhoamiText(): string {
+  return [
+    "**Cameron Keith**",
+    "Dartmouth '26 | CS & Economics",
+    "NCAA D1 Golfer | AI Researcher | Founder @ Brama AI",
+    "Alamo, CA",
+  ].join("\n");
+}
+
+function buildStatsText(): string {
+  return [
+    "**Golf Highlights**",
+    "- NCAA D1 Varsity Golf, Dartmouth (2022-Present)",
+    "- Cornell vs. Dartmouth Stroke Play: Individual Winner (2024)",
+    "- Alister Mackenzie Invitational: Team Leader (2024)",
+    "- AJGA Rolex Scholastic All-American (2022)",
+    "- Junior Olympian of the Year (2021)",
+    "- 130+ junior tournament entries (2016-2021)",
+  ].join("\n");
+}
 
 const ROUTE_MAP: Record<string, string> = {
   "/home": "/",
@@ -226,6 +273,49 @@ export function ChatWidget() {
               role: "assistant",
               content: "Opening **Cameron's resume** in a new tab.",
             },
+          ]);
+          break;
+
+        case "skills":
+          setMessages((prev) => [
+            ...prev,
+            { role: "assistant", content: buildSkillsText() },
+          ]);
+          break;
+
+        case "socials":
+          setMessages((prev) => [
+            ...prev,
+            { role: "assistant", content: buildSocialsText() },
+          ]);
+          break;
+
+        case "whoami":
+          setMessages((prev) => [
+            ...prev,
+            { role: "assistant", content: buildWhoamiText() },
+          ]);
+          break;
+
+        case "stats":
+          setMessages((prev) => [
+            ...prev,
+            { role: "assistant", content: buildStatsText() },
+          ]);
+          break;
+
+        case "email":
+          setMessages((prev) => [
+            ...prev,
+            { role: "assistant", content: "**cameron.s.keith.26@dartmouth.edu**" },
+          ]);
+          break;
+
+        case "source":
+          window.open("https://github.com/ckeith26/cameronkeithgolf", "_blank");
+          setMessages((prev) => [
+            ...prev,
+            { role: "assistant", content: "Opening **source repo** in a new tab." },
           ]);
           break;
       }

@@ -33,8 +33,17 @@ const BOOT_LINES: { content: string; style?: "command" | "muted" | "success" | "
   { content: "Ask me anything or type /help for commands.", style: "greeting", delay: 200 },
 ];
 
-const SLASH_COMMANDS: Record<string, { description: string; action: "navigate" | "resume" | "clear" | "help" }> = {
+type CommandAction = "navigate" | "resume" | "clear" | "help" | "skills" | "socials" | "whoami" | "stats" | "source" | "email";
+
+const SLASH_COMMANDS: Record<string, { description: string; action: CommandAction }> = {
   "/help": { description: "Show available commands", action: "help" },
+  "/skills": { description: "View Cameron's technical skills", action: "skills" },
+  "/socials": { description: "GitHub, LinkedIn, X links", action: "socials" },
+  "/whoami": { description: "Quick bio", action: "whoami" },
+  "/stats": { description: "Golf highlights", action: "stats" },
+  "/email": { description: "Get Cameron's email", action: "email" },
+  "/source": { description: "View site source code", action: "source" },
+  "/resume": { description: "Open Cameron's resume", action: "resume" },
   "/clear": { description: "Clear conversation", action: "clear" },
   "/home": { description: "Go to home page", action: "navigate" },
   "/about": { description: "Go to about page", action: "navigate" },
@@ -43,7 +52,6 @@ const SLASH_COMMANDS: Record<string, { description: string; action: "navigate" |
   "/golf": { description: "Go to golf page", action: "navigate" },
   "/blog": { description: "Go to blog", action: "navigate" },
   "/contact": { description: "Go to contact page", action: "navigate" },
-  "/resume": { description: "Open Cameron's resume", action: "resume" },
 };
 
 const ROUTE_MAP: Record<string, string> = {
@@ -57,6 +65,54 @@ const ROUTE_MAP: Record<string, string> = {
 };
 
 // ── Helpers ──────────────────────────────────────────────────────────
+
+function buildSocialsLines(): TerminalLine[] {
+  return [
+    { type: "text", content: "  GitHub      github.com/ckeith26", style: "muted" },
+    { type: "text", content: "  LinkedIn    linkedin.com/in/cam-keith", style: "muted" },
+    { type: "text", content: "  X           x.com/camkeithgolf", style: "muted" },
+  ];
+}
+
+function buildWhoamiLines(): TerminalLine[] {
+  return [
+    { type: "text", content: "  Cameron Keith", style: "greeting" },
+    { type: "text", content: "  Dartmouth '26 | CS & Economics", style: "muted" },
+    { type: "text", content: "  NCAA D1 Golfer | AI Researcher | Founder @ Brama AI", style: "muted" },
+    { type: "text", content: "  Alamo, CA", style: "muted" },
+  ];
+}
+
+function buildStatsLines(): TerminalLine[] {
+  return [
+    { type: "text", content: "  Golf Highlights", style: "greeting" },
+    { type: "text", content: "    NCAA D1 Varsity Golf, Dartmouth (2022-Present)", style: "muted" },
+    { type: "text", content: "    Cornell vs. Dartmouth Stroke Play: Individual Winner (2024)", style: "muted" },
+    { type: "text", content: "    Alister Mackenzie Invitational: Team Leader (2024)", style: "muted" },
+    { type: "text", content: "    AJGA Rolex Scholastic All-American (2022)", style: "muted" },
+    { type: "text", content: "    Junior Olympian of the Year (2021)", style: "muted" },
+    { type: "text", content: "    130+ junior tournament entries (2016-2021)", style: "muted" },
+  ];
+}
+
+function buildSkillsLines(): TerminalLine[] {
+  const skills: { category: string; items: string }[] = [
+    { category: "AI & ML", items: "AI Agents, LLMs/VLMs, PyTorch, LangGraph, RAG, Neural Networks, Video Classification" },
+    { category: "Programming", items: "Python, JavaScript, Java, C, Swift, SQL" },
+    { category: "Web & Full Stack", items: "React, React Native, MongoDB, MySQL, Redis, Firebase" },
+    { category: "Infrastructure", items: "Docker, AWS, Linux" },
+    { category: "Security", items: "Cybersecurity, PKI, Public Key Cryptography" },
+    { category: "Data & Quant", items: "Pandas, Quantitative Research, Quantitative Finance, Web Scraping" },
+    { category: "Fundamentals", items: "Data Structures, OOP, Linear Algebra, Hidden Markov Models" },
+    { category: "Business", items: "Entrepreneurship, Startup Development, Business Strategy, Team Leadership" },
+  ];
+  const lines: TerminalLine[] = [];
+  for (const { category, items } of skills) {
+    lines.push({ type: "text", content: `  ${category}`, style: "greeting" });
+    lines.push({ type: "text", content: `    ${items}`, style: "muted" });
+  }
+  return lines;
+}
 
 function buildHelpLines(): TerminalLine[] {
   const lines: TerminalLine[] = [
@@ -567,6 +623,51 @@ export function Terminal({ className }: TerminalProps) {
             { role: "assistant", content: "Opening Cameron's resume in a new tab." },
           ]);
           break;
+
+        case "skills": {
+          const skillsLines = buildSkillsLines();
+          setLines((prev) => [...prev, ...skillsLines]);
+          setMessages((prev) => [...prev, userMsg, { role: "assistant", content: "/skills" }]);
+          break;
+        }
+
+        case "socials": {
+          const socialsLines = buildSocialsLines();
+          setLines((prev) => [...prev, ...socialsLines]);
+          setMessages((prev) => [...prev, userMsg, { role: "assistant", content: "/socials" }]);
+          break;
+        }
+
+        case "whoami": {
+          const whoamiLines = buildWhoamiLines();
+          setLines((prev) => [...prev, ...whoamiLines]);
+          setMessages((prev) => [...prev, userMsg, { role: "assistant", content: "/whoami" }]);
+          break;
+        }
+
+        case "stats": {
+          const statsLines = buildStatsLines();
+          setLines((prev) => [...prev, ...statsLines]);
+          setMessages((prev) => [...prev, userMsg, { role: "assistant", content: "/stats" }]);
+          break;
+        }
+
+        case "email":
+          setLines((prev) => [
+            ...prev,
+            { type: "text", content: "  cameron.s.keith.26@dartmouth.edu", style: "muted" },
+          ]);
+          setMessages((prev) => [...prev, userMsg, { role: "assistant", content: "cameron.s.keith.26@dartmouth.edu" }]);
+          break;
+
+        case "source":
+          window.open("https://github.com/ckeith26/cameronkeithgolf", "_blank");
+          setLines((prev) => [
+            ...prev,
+            { type: "text", content: "Opening source repo in a new tab.", style: "success" },
+          ]);
+          setMessages((prev) => [...prev, userMsg, { role: "assistant", content: "Opening source repo." }]);
+          break;
       }
 
       return true;
@@ -746,12 +847,9 @@ export function Terminal({ className }: TerminalProps) {
       ref={containerRef}
       className={`bg-[#111111] font-mono rounded-lg border border-[#27272a] flex flex-col ${className ?? ""}`}
     >
-      {/* macOS title bar */}
-      <div className="flex items-center gap-2 px-4 py-3 border-b border-[#27272a]">
-        <span className="w-3 h-3 rounded-full bg-[#ef4444]" />
-        <span className="w-3 h-3 rounded-full bg-[#eab308]" />
-        <span className="w-3 h-3 rounded-full bg-[#22c55e]" />
-        <span className="text-[#71717a] text-xs ml-3">✻ Cam Code - v1.0 ‹ terminal</span>
+      {/* Title bar */}
+      <div className="flex items-center justify-center px-4 py-3 border-b border-[#27272a]">
+        <span className="text-[#71717a] text-xs">✻ Cam Code - v1.0 ‹ terminal</span>
       </div>
 
       {/* Output area */}
