@@ -8,13 +8,17 @@ interface PhotoCarouselProps {
   speed?: number; // seconds for one full cycle
 }
 
-export function PhotoCarousel({ photos, speed = 60 }: PhotoCarouselProps) {
+export function PhotoCarousel({ photos, speed = 120 }: PhotoCarouselProps) {
   const [isPaused, setIsPaused] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
     <div
       className="relative overflow-hidden"
+      style={{
+        maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+        WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+      }}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       ref={containerRef}
@@ -22,7 +26,10 @@ export function PhotoCarousel({ photos, speed = 60 }: PhotoCarouselProps) {
       <div
         className="flex gap-3"
         style={{
-          animation: `scroll-left ${speed}s linear infinite`,
+          animationName: "scroll-left",
+          animationDuration: `${speed}s`,
+          animationTimingFunction: "linear",
+          animationIterationCount: "infinite",
           animationPlayState: isPaused ? "paused" : "running",
           width: "max-content",
         }}
@@ -44,16 +51,6 @@ export function PhotoCarousel({ photos, speed = 60 }: PhotoCarouselProps) {
         ))}
       </div>
 
-      <style jsx>{`
-        @keyframes scroll-left {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-      `}</style>
     </div>
   );
 }

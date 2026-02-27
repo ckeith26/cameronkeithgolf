@@ -114,3 +114,8 @@ h4 {
   0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
   50% { box-shadow: 0 0 35px rgba(16, 185, 129, 0.55); }
 }
+
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
