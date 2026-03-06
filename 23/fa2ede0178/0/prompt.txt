@@ -1,0 +1,13 @@
+in the about page, the cards for the classes and other sections overlap. Fix this behavior on mobile.
+
+---
+
+[Image: source: REDACTED 2026-03-06 at 2.31.29 PM.png]
+
+---
+
+Tool loaded.
+
+---
+
+Tool loaded.
