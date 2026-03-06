@@ -119,3 +119,11 @@ h4 {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
+
+/* Coursework grid: column-first flow only on lg (3-col) */
+@media (min-width: 1024px) {
+  .coursework-grid {
+    grid-auto-flow: column;
+    grid-template-rows: repeat(var(--course-rows), minmax(0, 1fr));
+  }
+}
