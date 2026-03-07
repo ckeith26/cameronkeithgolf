@@ -1,0 +1,54 @@
+in the about page, the cards for the classes and other sections overlap. Fix this behavior on mobile.
+
+---
+
+[Image: source: REDACTED 2026-03-06 at 2.31.29 PM.png]
+
+---
+
+Tool loaded.
+
+---
+
+Tool loaded.
+
+---
+
+right now. my projects x contributions number shows the number of commits
+  instead of the number of contributions frmo github. Fix it so they match
+
+---
+
+Tool loaded.
+
+---
+
+Tool loaded.
+
+---
+
+Tool loaded.
+
+---
+
+is this token read only?
+
+---
+
+yes
+
+---
+
+ok try to access it shouldn't be able to have
+
+---
+
+wait what happened to my develop branch?
+
+---
+
+yes check previous sessions
+
+---
+
+no, just commit and push everything
