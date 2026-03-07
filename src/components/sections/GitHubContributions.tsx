@@ -41,6 +41,30 @@ function remapColors(svg: string): string {
   return svg;
 }
 
+async function fetchContributionCount(): Promise<number> {
+  const token = process.env.GITHUB_TOKEN;
+  if (!token) return 0;
+
+  try {
+    const res = await fetch("https://api.github.com/graphql", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: `query { user(login: "${GITHUB_USERNAME}") { contributionsCollection { contributionCalendar { totalContributions } } } }`,
+      }),
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) return 0;
+    const json = await res.json();
+    return json.data?.user?.contributionsCollection?.contributionCalendar?.totalContributions ?? 0;
+  } catch {
+    return 0;
+  }
+}
+
 async function fetchContributionSvg(): Promise<{
   svg: string;
   total: number;
@@ -56,26 +80,7 @@ async function fetchContributionSvg(): Promise<{
     let svg = sanitizeSvg(raw);
     if (!svg) return null;
 
-    // Fetch actual contribution count from GitHub's contributions page
-    let total = 0;
-    try {
-      const contribRes = await fetch(
-        `https://github.com/users/${GITHUB_USERNAME}/contributions`,
-        { next: { revalidate: 3600 } }
-      );
-      if (contribRes.ok) {
-        const contribHtml = await contribRes.text();
-        // Parse "X contributions in the last year" text
-        const totalMatch = contribHtml.match(
-          /([\d,]+)\s+contributions?\s+in\s+the\s+last\s+year/
-        );
-        if (totalMatch) {
-          total = parseInt(totalMatch[1].replace(/,/g, ""), 10);
-        }
-      }
-    } catch {
-      // Fall back to 0 if fetch fails
-    }
+    const total = await fetchContributionCount();
 
     // Round squares
     svg = svg.replace(/<rect /g, '<rect rx="3" ry="3" ');
