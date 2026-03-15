@@ -26,13 +26,19 @@ export async function POST(request: NextRequest) {
 
   const agent = createAgent();
 
+  // Strip any <think>...</think> blocks from prior assistant messages
+  // (cleans up old conversations that may have stored reasoning text)
+  const stripThink = (text: string) =>
+    text.replace(/<think>[\s\S]*?<\/think>/g, "").trim();
+
   // Convert client messages to LangChain format
   const langchainMessages = body.messages.map(
     (m: { role: string; content: string }) => {
+      const content = m.role === "assistant" ? stripThink(m.content) : m.content;
       if (m.role === "user") {
-        return new HumanMessage(m.content);
+        return new HumanMessage(content);
       }
-      return new AIMessage(m.content);
+      return new AIMessage(content);
     }
   );
 
@@ -52,7 +58,10 @@ export async function POST(request: NextRequest) {
         for await (const event of eventStream) {
           // Stream text content from the LLM
           if (event.event === "on_chat_model_stream") {
-            const content = event.data.chunk?.content;
+            const chunk = event.data.chunk;
+            // Skip chunks that are reasoning/thinking content
+            if (chunk?.additional_kwargs?.reasoning_content) continue;
+            const content = chunk?.content;
             if (content && typeof content === "string") {
               controller.enqueue(
                 encoder.encode(

@@ -32,7 +32,7 @@ export const getInfoTool = tool(
   {
     name: "get_info",
     description:
-      "Retrieve detailed information about Cameron Keith from his portfolio data. Always use this tool to get accurate facts before answering questions about Cameron.",
+      'Retrieve detailed information about Cameron Keith from his portfolio data. Always use this tool to get accurate facts before answering questions about Cameron. Choose the right topic: use "experience" for hiring/qualifications/work questions (NOT "about"), "projects" for technical work, "about" for personal background, "golf" for athletics, "contact" for reaching Cameron.',
     schema: z.object({
       topic: z
         .enum([

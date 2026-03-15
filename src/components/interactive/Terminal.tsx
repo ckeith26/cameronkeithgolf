@@ -26,12 +26,19 @@ type TerminalLine =
 
 // ── Constants ────────────────────────────────────────────────────────
 
-const STORAGE_KEY = "ck-terminal-messages";
+const STORAGE_KEY = "ck-chat-messages";
 
 const BOOT_LINES: { content: string; style?: "command" | "muted" | "success" | "greeting"; delay: number }[] = [
   { content: "Hey! I'm Cam Code, Cameron's AI assistant.", style: "greeting", delay: 200 },
   { content: "Ask me anything or type /help for commands.", style: "greeting", delay: 200 },
 ];
+
+// Initial assistant message for API context (matches ChatWidget's GREETING)
+const GREETING: Message = {
+  role: "assistant",
+  content:
+    "Hey! I'm **Cam Code**, Cameron's AI assistant. Ask me anything or type `/help` to see available commands.",
+};
 
 type CommandAction = "navigate" | "resume" | "clear" | "help" | "skills" | "socials" | "whoami" | "stats" | "source" | "email";
 
@@ -373,13 +380,14 @@ export function Terminal({ className }: TerminalProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [lines, setLines] = useState<TerminalLine[]>([]);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([GREETING]);
   const [isTyping, setIsTyping] = useState(false);
   const [bootComplete, setBootComplete] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const hasBootedRef = useRef(false);
+  const messagesRef = useRef<Message[]>([GREETING]);
 
   const mountedRef = useRef(true);
 
@@ -485,8 +493,11 @@ export function Terminal({ className }: TerminalProps) {
 
   // ── Persist messages on every change ───────────────────────────────
 
+  // Keep messagesRef in sync with state
   useEffect(() => {
-    if (messages.length > 0) {
+    messagesRef.current = messages;
+    // Only persist when there are real messages beyond the initial greeting
+    if (messages.length > 1) {
       persistMessages(messages);
     }
   }, [messages]);
@@ -583,8 +594,9 @@ export function Terminal({ className }: TerminalProps) {
           setLines([
             { type: "text", content: "$ cam", style: "command" },
             { type: "welcome" },
+            ...BOOT_LINES.map((b) => ({ type: "text" as const, content: b.content, style: b.style })),
           ]);
-          setMessages([]);
+          setMessages([GREETING]);
           localStorage.removeItem(STORAGE_KEY);
           break;
 
@@ -593,6 +605,7 @@ export function Terminal({ className }: TerminalProps) {
           if (route) {
             setLines((prev) => [...prev, { type: "nav", status: "pending", route }]);
             setMessages((prev) => [...prev, userMsg, { role: "assistant", content: `Navigating to ${route}` }]);
+            localStorage.setItem("ck-chat-auto-open", "true");
             router.push(route);
             setTimeout(() => {
               setLines((prev) => {
@@ -697,13 +710,10 @@ export function Terminal({ className }: TerminalProps) {
       // Show user input as command line
       setLines((prev) => [...prev, { type: "text", content: `❯ ${trimmed}`, style: "command" }]);
 
-      // Build messages for API - use functional updater to avoid stale closure
+      // Build messages for API - read from ref for latest value
       const userMsg: Message = { role: "user", content: trimmed };
-      let updatedMessages: Message[] = [];
-      setMessages((prev) => {
-        updatedMessages = [...prev, userMsg];
-        return updatedMessages;
-      });
+      const updatedMessages = [...messagesRef.current, userMsg];
+      setMessages(updatedMessages);
 
       // Show loading indicator
       setIsLoading(true);
@@ -767,6 +777,7 @@ export function Terminal({ className }: TerminalProps) {
                   ...prev,
                   { type: "nav", status: "pending", route: event.route },
                 ]);
+                localStorage.setItem("ck-chat-auto-open", "true");
                 router.push(event.route);
                 setTimeout(() => {
                   setLines((prev) => {

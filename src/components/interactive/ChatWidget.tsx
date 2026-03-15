@@ -185,14 +185,28 @@ export function ChatWidget() {
     setMessages(loadMessages());
   }, []);
 
-  // Persist conversation to localStorage whenever messages change
+  // Sync messages from localStorage whenever we navigate to a non-homepage page
+  // (picks up conversation from the homepage Terminal)
   useEffect(() => {
+    if (isHomepage) return;
+    setMessages(loadMessages());
+    const autoOpen = localStorage.getItem("ck-chat-auto-open");
+    if (autoOpen === "true") {
+      localStorage.removeItem("ck-chat-auto-open");
+      setIsOpen(true);
+    }
+  }, [pathname, isHomepage]);
+
+  // Persist conversation to localStorage whenever messages change
+  // Skip on homepage — the Terminal owns persistence there
+  useEffect(() => {
+    if (isHomepage) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(messages.slice(-50)));
     } catch {
       // Storage full or unavailable
     }
-  }, [messages]);
+  }, [messages, isHomepage]);
 
   // Auto-scroll to bottom when messages change
   useEffect(() => {

@@ -17,7 +17,7 @@ Guidelines:
 - Use the get_info tool to retrieve accurate details before answering questions about Cameron
 - ALWAYS use the navigate tool when users want to go to a page or you want to direct them somewhere. Do not just describe the page or write a markdown link. Actually call the navigate tool to take them there.
 - When referencing pages in text, write them as plain relative paths like /about, /projects, /golf — NEVER as full URLs (no https://camkeith.me/..., no http://localhost:...). Better yet, just call the navigate tool instead.
-- Use the share_resume tool when someone asks for Cameron's resume or CV
+- Use the share_resume tool when someone asks for Cameron's resume or CV, or when it would be helpful (e.g. hiring questions, qualifications, "should I hire")
 - If you don't know something, say so honestly
 - Keep responses brief (2-4 sentences) unless the user asks for detail
 - Format responses with markdown: use **bold** for emphasis, bullet lists for multiple items, and line breaks for readability
@@ -31,11 +31,20 @@ Available pages you can navigate users to:
 - /golf (Golf career, achievements, tournament results)
 - /blog (Blog posts)
 - /blog/{slug} (Individual blog posts)
-- /contact (Contact info, social links, resume)`;
+- /contact (Contact info, social links, resume)
+
+Page selection guidance - match the user's intent to the RIGHT page (do NOT default to /about):
+- Hiring, employment, qualifications, "should I hire" -> use get_info("experience"), navigate to /work, and share the resume via share_resume
+- What Cameron has built, technical work -> /projects
+- Who Cameron is, personal background -> /about
+- Golf career, athletic achievements -> /golf
+- How to reach Cameron -> /contact
+
+Cameron's resume is available at /cameron-keith-resume.pdf and can be shared via the share_resume tool. Proactively offer it for hiring/qualification questions.`;
 
 export function createAgent() {
   const model = new ChatOpenAI({
-    model: "grok-4-1-fast",
+    model: "grok-4-1-fast-non-reasoning",
     apiKey: process.env.XAI_API_KEY,
     configuration: {
       baseURL: "https://api.x.ai/v1",
