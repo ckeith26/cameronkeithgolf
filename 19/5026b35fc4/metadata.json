@@ -1,0 +1,39 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "195026b35fc4",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 15,
+  "files_touched": [
+    "e2e/chat-sync.spec.ts",
+    "e2e/chatwidget-flows.spec.ts",
+    "e2e/navigation-sync.spec.ts",
+    "e2e/terminal-flows.spec.ts",
+    "playwright.config.ts",
+    "src/app/api/agent/route.ts",
+    "src/components/interactive/ChatWidget.tsx",
+    "src/components/interactive/Terminal.tsx",
+    "src/lib/agent/graph.ts",
+    "src/lib/agent/tools.ts",
+    "test-results/.last-run.json",
+    "test-results/navigation-sync-Cross-comp-ddfaf-uto-opens-with-conversation/error-context.md",
+    "test-results/terminal-flows-Terminal-UI-5f8e0-ines-not-markdown-AI-style-/error-context.md",
+    "test-results/terminal-flows-Terminal-UI-edbaa-t-is-functional-after-clear/error-context.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/19/5026b35fc4/0/metadata.json",
+      "transcript": "/19/5026b35fc4/0/full.jsonl",
+      "context": "/19/5026b35fc4/0/context.md",
+      "content_hash": "/19/5026b35fc4/0/content_hash.txt",
+      "prompt": "/19/5026b35fc4/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 185,
+    "cache_creation_tokens": 293318,
+    "cache_read_tokens": 16246172,
+    "output_tokens": 72975,
+    "api_call_count": 131
+  }
+}

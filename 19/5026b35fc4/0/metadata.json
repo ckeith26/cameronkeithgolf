@@ -1,0 +1,43 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "195026b35fc4",
+  "session_id": "443d9387-9119-4760-a36b-33768f03ff49",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-15T05:49:37.220772Z",
+  "branch": "main",
+  "checkpoints_count": 15,
+  "files_touched": [
+    "e2e/chat-sync.spec.ts",
+    "e2e/chatwidget-flows.spec.ts",
+    "e2e/navigation-sync.spec.ts",
+    "e2e/terminal-flows.spec.ts",
+    "playwright.config.ts",
+    "src/app/api/agent/route.ts",
+    "src/components/interactive/ChatWidget.tsx",
+    "src/components/interactive/Terminal.tsx",
+    "src/lib/agent/graph.ts",
+    "src/lib/agent/tools.ts",
+    "test-results/.last-run.json",
+    "test-results/navigation-sync-Cross-comp-ddfaf-uto-opens-with-conversation/error-context.md",
+    "test-results/terminal-flows-Terminal-UI-5f8e0-ines-not-markdown-AI-style-/error-context.md",
+    "test-results/terminal-flows-Terminal-UI-edbaa-t-is-functional-after-clear/error-context.md"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "5700aeb1-1528-4aae-9782-a15edbff09a1",
+  "token_usage": {
+    "input_tokens": 185,
+    "cache_creation_tokens": 293318,
+    "cache_read_tokens": 16246172,
+    "output_tokens": 72975,
+    "api_call_count": 131
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-15T05:49:37.100301Z",
+    "agent_lines": 0,
+    "human_added": 0,
+    "human_modified": 13116,
+    "human_removed": 8035,
+    "total_committed": 0,
+    "agent_percentage": 0
+  }
+}
